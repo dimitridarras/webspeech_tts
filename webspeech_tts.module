@@ -1,0 +1,132 @@
+<?php
+
+/**
+ * @file
+ * TTS (Text-to-Speech) to hear Content
+ *
+ * Use TTS (Text-to-Speech) to hear Content on a Node with Chome using Voice Elements by Zenorocha
+ *
+ *  In content type "Display Settings" add a checkbox for TTS
+ *  Prepend the node body with a unique ID For JavaScript
+ *  Find parameters for Webspeech API
+ *  Load JS
+ *  Find a means of triggering JavaScript that reads contents of a node
+ *  Set and pass parameters to custom JS for reading a node
+ *  Update help and perms if necessary
+ *  Determine if it makes sense to bundle JS with Module or Use Libraries
+ *  Test on others
+ *  Create a Sandbox project/Git Repo for project
+ */
+
+/**
+ * Implements hook_help().
+ */
+
+function webspeech_tts_help($path, $arg) {
+  switch ($path) {
+    // Help for the Neat Scrollbar module.
+    case 'admin/help#webspeech_tts':
+      $output = '<p>' . t('The Webspeech Module adds basic TTS (Text to Speech) functionality to nodes on the Chrome browser.  Authorized users and Adminstrators can define various settings.');
+      $output .= t('For configuration options see the Voice Elements <a href="@config">options & settings page</a>.',
+                     array('@config' => url('admin/config/content/webspeech_tts'))) . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+
+function webspeech_tts_menu() {
+
+  $items = array();  
+  $items['node/%/webspeech_tts'] = array(    
+      'title' => 'Webspeech TTS',
+      'description' => t('Use TTS (Text-to-Speech) to hear Content on a Node with Chome using the Web Speech API'),  
+      'page callback' => 'get_node_content',//'drupal_get_form',
+      //'page arguments' => array('get_node_content'),    //'webspeech_tts_form', 
+      'access arguments' => array('access content'),    
+      'type' => MENU_LOCAL_TASK,  );  
+
+  return $items;
+
+}
+
+/**
+ * Implements hook_form().
+ */
+//https://www.drupal.org/node/1419390
+
+function webspeech_tts_form($form, &$form_state) {
+  
+  $options = array(
+      'English' => t('English'),  
+      'Spanish' => t('Spanish'),
+    ); 
+
+  $form['read_body_radios_test'] = array(
+    '#type' => 'select',  
+    '#options' => $options,
+    '#description' => 'Choose an accent',
+    '#default_value' =>   $options['English'],
+    );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+  );
+
+
+  /** need to add the accent dropdown later **/
+  
+  return $form;
+
+}
+
+
+function webspeech_tts_form_submit($form, &$form_state) {
+  drupal_set_message(t("a message")); 
+
+  //return 'Placeholder text for the subscribe tab.'; 
+  //http://drupal.stackexchange.com/questions/19019/how-do-i-print-the-body-of-a-node
+  //https://www.drupal.org/node/2070827
+
+
+  //print $body[0]['value'];
+  //$node->getField('body')
+
+}
+
+//function get_node_content(){
+
+  //drupal_set_message("callback worked");
+
+  //https://www.drupal.org/node/2070827
+
+  //$node = node_load($nid);
+  //$the_val = $node->getField('body');
+  
+  //dsm($node);
+
+  // $my_field_items = field_get_items('node', $node, 'body');
+
+  //$content = array();
+  //$content['raw_markup'] = array(
+  //  '#type' => 'markup',
+    //'#markup' => $my_field_items ,
+    /*set the div as variable here*/
+  // '#markup'=> '<div style="width:100px;height:100px" id="change_me";></div>',
+  //);  
+ // return $content; 
+
+//}
+
+function hook_node_view($node, $view_mode, $langcode) {
+  $node->content['my_additional_field'] = array(
+    '#markup' => '<div id="read_this">',
+    '#weight' => 10,
+    //'#theme' => 'mymodule_my_additional_field',
+  );
+}
+
+

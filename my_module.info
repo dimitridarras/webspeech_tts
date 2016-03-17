@@ -1,0 +1,13 @@
+name = My Module
+description = Testing Form Submit Functionality
+core = 7.x
+package  = My Module
+version = 0.1-dev
+;dependencies[] = Libraries
+;dependencies[] = block
+
+;scripts[] = myjs.js - reserved for possible browser detection
+;configure = admin/config/content/webspeech_tts
+
+
+
