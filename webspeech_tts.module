@@ -5,20 +5,27 @@
  * TTS (Text-to-Speech) to hear Content
  *
  * Use TTS (Text-to-Speech) to hear Content on a Node with Chome using Voice Elements by Zenorocha
- *
+ *  Other resources:
+ *   (Is this offical?) https://developers.google.com/web/updates/2014/01/Web-apps-that-talk-Introduction-to-the-Speech-Synthesis-API?hl=en
+ *  http://stephenwalther.com/archive/2015/01/05/using-html5-speech-recognition-and-text-to-speech
+ *  http://blog.teamtreehouse.com/getting-started-speech-synthesis-api
+ *  https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html - evidently official
  *  In content type "Display Settings" add a checkbox for TTS
  *  Prepend the node body with a unique ID For JavaScript
- *  Find parameters for Webspeech API
+ *  Find parameters for Webspeech API 
  *  Load JS
  *  http://drupal.stackexchange.com/questions/14743/how-to-retrive-menu-get-object-in-javascript-jquery
  *  http://drupal.stackexchange.com/questions/87598/fire-javascript-on-a-form-submit
- *  Find a means of triggering JavaScrip
- t that reads contents of a node
+ *  Find a means of triggering JavaScript that reads contents of a node 
  *  Set and pass parameters to custom JS for reading a node
  *  Update help and perms if necessary
  *  Determine if it makes sense to bundle JS with Module or Use Libraries
- *  Test on others
+ *  Test on others 
  *  Create a Sandbox project/Git Repo for project
+ *  http://blog.teamtreehouse.com/getting-started-speech-synthesis-api
+
+ *  http://stackoverflow.com/questions/21513706/getting-the-list-of-voices-in-speechsynthesis-of-chrome-web-speech-api
+ *  http://responsivevoice.org/
  */
 
 /**
@@ -83,7 +90,7 @@ drupal_set_message($node_content_to_js);
 drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
 drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
 
-  
+
   $content = array();
   $content['raw_markup'] = array(
     '#type' => 'markup',
