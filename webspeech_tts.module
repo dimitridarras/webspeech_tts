@@ -12,7 +12,8 @@
  *  Load JS
  *  http://drupal.stackexchange.com/questions/14743/how-to-retrive-menu-get-object-in-javascript-jquery
  *  http://drupal.stackexchange.com/questions/87598/fire-javascript-on-a-form-submit
- *  Find a means of triggering JavaScript that reads contents of a node
+ *  Find a means of triggering JavaScrip
+ t that reads contents of a node
  *  Set and pass parameters to custom JS for reading a node
  *  Update help and perms if necessary
  *  Determine if it makes sense to bundle JS with Module or Use Libraries
@@ -26,8 +27,8 @@
 
 function webspeech_tts_menu() {
   $items['webspeech_tts'] = array(
-    'title' => t('JS Module Test'),
-    'description' => t('Sending and Receiving JS and PHP Vars'),
+    'title' => t('Webspeech TTS for Chrome'),
+    'description' => t('Read Node Content Out Loud'),
     'type' => MENU_CALLBACK,
     'page callback' => 'webspeech_tts_cb',
     'page arguments' => array('webspeech_tts_configuration_form'),
@@ -38,7 +39,7 @@ function webspeech_tts_menu() {
   /* situate the page under "structure"  in the menu for now...*/
   $items['admin/structure/webspeech_tts'] = array(
     'title' => 'webspeech_tts',
-    'description' => 'Toggle a DIV with JS and PHP',
+    'description' => 'Get the content of a Node, send it to JS for WebSpeech',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webspeech_tts_admin'),
     'access arguments' => array('administer webspeech_tts'),
@@ -70,6 +71,19 @@ function webspeech_tts_help($path, $arg) {
  */
 
 function webspeech_tts_cb() {
+
+
+//http://drupal.stackexchange.com/questions/32931/how-do-you-properly-render-the-body-when-pulling-it-from-the-database-using-db-s/32934#32934
+
+// Get an entity (node in this case).
+$node = node_load(1);
+$node_content_to_js = $node->body['und'][0]['value'];
+drupal_set_message($node_content_to_js);
+//Send this to JS!
+drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
+drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
+
+  
   $content = array();
   $content['raw_markup'] = array(
     '#type' => 'markup',
@@ -82,18 +96,6 @@ function webspeech_tts_cb() {
   drupal_set_message("foo" );
 
 
-  //http://drupal.stackexchange.com/questions/32931/how-do-you-properly-render-the-body-when-pulling-it-from-the-database-using-db-s/32934#32934
-
-// Get an entity (node in this case).
-$node = node_load(1);
-
-// Get the view for the body field
-$view = field_view_field('node', $node, 'body');
-
-//$text = check_markup($body_value, $body_format);
-
-//drupal_set_message($view);
-drupal_set_message($node->body['und'][0]['value']);
 
  print '<pre>';
   var_dump(get_defined_vars()); 
@@ -102,20 +104,6 @@ drupal_set_message($node->body['und'][0]['value']);
   return $content; 
 
 }
-
-
-/*function webspeech_tts_preprocess_webform_form(&$vars){
-  drupal_set_message("made it" );
-  $node = node_load($node_id);
-  drupal_set_message($node->body['und'][0]['value']);
-}*/
-
-  //$node = node_load($node_id);
-  //echo $node->body['und'][0]['value']
-
-
-  //$node = $variables['node'];
-
 
 
 /**
