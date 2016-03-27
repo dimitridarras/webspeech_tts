@@ -89,6 +89,7 @@ drupal_set_message($node_content_to_js);
 //Send this to JS!
 drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
 drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
+//Get a Drupal Button to meld with drupal_add_js
 
 
   $content = array();
