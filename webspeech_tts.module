@@ -38,13 +38,12 @@ function webspeech_tts_menu() {
     'title' => t('Webspeech TTS for Chrome'),
     'description' => t('Read Node Content Out Loud'),
     'type' => MENU_CALLBACK,
-    'page callback' => 'webspeech_tts_cb',
-    'page arguments' => array('webspeech_tts_form'),
+    'page callback' => 'webspeech_tts_form',
+    //https://www.drupal.org/node/457782
     'access arguments' => array('administer webspeech_tts'),
-    /*callback for the admin rendering*/
     'access callback' => TRUE,
   );
-  /* situate the page under "structure"  in the menu for now...*/
+
   $items['admin/structure/webspeech_tts'] = array(
     'title' => 'webspeech_tts',
     'description' => 'Get the content of a Node, send it to JS for WebSpeech',
@@ -57,13 +56,6 @@ function webspeech_tts_menu() {
   return $items;
 }
 
-/**
- * Display help and module information
- * @param path which path of the site we're displaying help
- * @param arg array that holds the current path as would be returned from arg() function
- * @return help text for the path
- */
-
 function webspeech_tts_help($path, $arg) {
   $output = '';  //declare your output variable
   switch ($path) {
@@ -74,55 +66,51 @@ function webspeech_tts_help($path, $arg) {
   return $output;
 } 
 
-/**
- * Page callback for /change_divw.
- */
 
 function webspeech_tts_cb() {
 
-//Get buttons on the node
 
-
-
-//http://drupal.stackexchange.com/questions/32931/how-do-you-properly-render-the-body-when-pulling-it-from-the-database-using-db-s/32934#32934
-
-// Get an entity (node in this case).
 $node = node_load(1);
 $node_content_to_js = $node->body['und'][0]['value'];
-drupal_set_message($node_content_to_js);
-//Send this to JS!
-drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
+drupal_set_message($node_content_to_js);drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
 drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
-//Get a Drupal Button to meld with drupal_add_js
 
+drupal_set_message("foo" );
 
-  $content = array();
-  $content['raw_markup'] = array(
-    '#type' => 'markup',
-    '#markup' => 'Testing',
-    /*set the div as variable here*/
-   '#markup'=> '<div style="width:100px;height:100px;background-color:blue" id="change_me";></div><div> FOO </div>',
-  );  
-
-
-  drupal_set_message("foo" );
-
- print '<pre>';
-  var_dump(get_defined_vars()); 
+  print '<pre>';
+    var_dump(get_defined_vars());
   print '</pre>';
-  webspeech_tts_form();
 
-  return $content; 
+
 
 }
 
 function webspeech_tts_form($form, &$form_state){
+
+ // drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js', array('weight' => 100));
+
+  $node = node_load(1);
+  $node_content_to_js = $node->body['und'][0]['value'];
+  drupal_set_message($node_content_to_js);
+  drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
+  drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
+
+  drupal_set_message("foo" );
+
+  print '<pre>';
+  var_dump(get_defined_vars());
+  print '</pre>';
+
+
   drupal_set_message("made it to form");
   $form['submit_button'] = array(
-    '#type' => 'submit',
-    '#value' => t('Click Here!'),
+      '#type' => 'submit',
+      '#value' => t('Click Here!'),
+      '#action' => url('#'),
+      '#attributes' => array('onclick' => 'return (false);'),
+      //'#disabled' => TRUE,
   );
-  
+
   return $form;
 }
 
@@ -145,8 +133,6 @@ function webspeech_tts_permission() {
  */
 
 
-
- 
 //function webspeech_tts_admin() {
 
 
