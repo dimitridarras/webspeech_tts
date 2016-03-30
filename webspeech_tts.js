@@ -1,25 +1,37 @@
-Drupal.behaviors.myModule = {
-  attach : function()
-  {
-    //alert("made it");
-    //alert(Drupal.settings.webspeech_tts.proof_of_concept);
-    render_voice = Drupal.settings.webspeech_tts.proof_of_concept;
-    //var msg = new SpeechSynthesisUtterance('Hello World');
-    var msg = new SpeechSynthesisUtterance(render_voice);
-    window.speechSynthesis.speak(msg);
+/*
+
+Research:
+
+https://api.drupal.org/api/drupal/includes!common.inc/function/drupal_add_js/7
+http://drupal.stackexchange.com/questions/87598/fire-javascript-on-a-form-submit
+http://drupal.stackexchange.com/questions/16818/how-to-make-form-buttons-call-only-javascript
+http://stackoverflow.com/questions/23370269/jquery-autosize-plugin-error-intermediate-value-is-not-a-function
+https://www.drupal.org/node/756722
+Managing JavaScript in Drupal7 - https://www.drupal.org/node/756722
+bah! $("form#submit_button").submit(function(e) {...   not enough: e.preventDefault(); ditto for: return false;
+*** Wrap behaviors in the (function($){}
+* 
+*/
 
 
-    //speechSynthesis.getVoices().forEach(function(voice) {
-    //console.log(voice.name, voice.default ? '(default)' :'');
+(function ($) {
+alert ("foo");
 
-var msg = new SpeechSynthesisUtterance('I see dead people!');
-msg.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == 'Whisper'; })[0];
-speechSynthesis.speak(msg);
+  Drupal.behaviors.webspeech_tts = {
+    attach: function () {
+      alert("in behavior");
+      $('.form-submit').click(function () {
+        alert('button clicked');
+        render_voice = Drupal.settings.webspeech_tts.proof_of_concept;
+        var msg = new SpeechSynthesisUtterance(render_voice);
+        window.speechSynthesis.speak(msg);
+      });
+    }
 
 
+  }
 
-      }
-}
+}(jQuery))
 
-;
+
 
