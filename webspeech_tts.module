@@ -1,94 +1,28 @@
 <?php
 
-/**
- * @file
- * TTS (Text-to-Speech) to hear Content
- *
- * Use TTS (Text-to-Speech) to hear Content on a Node with Chome using Voice Elements by Zenorocha
- *  Other resources:
- *   (Is this offical?) https://developers.google.com/web/updates/2014/01/Web-apps-that-talk-Introduction-to-the-Speech-Synthesis-API?hl=en
- *  http://stephenwalther.com/archive/2015/01/05/using-html5-speech-recognition-and-text-to-speech
- *  http://blog.teamtreehouse.com/getting-started-speech-synthesis-api
- *  https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html - evidently official
- *  In content type "Display Settings" add a checkbox for TTS
- *  Prepend the node body with a unique ID For JavaScript
- *  Find parameters for Webspeech API 
- *  Load JS
- *  http://drupal.stackexchange.com/questions/14743/how-to-retrive-menu-get-object-in-javascript-jquery
- *  http://drupal.stackexchange.com/questions/87598/fire-javascript-on-a-form-submit
- *  Different Kinds of Drupal Buttons (dated web standards) https://www.drupal.org/node/283065
- *  Find a means of triggering JavaScript that reads contents of a node 
- *  Set and pass parameters to custom JS for reading a node
- *  Update help and perms if necessary
- *  Determine if it makes sense to bundle JS with Module or Use Libraries
- *  Test on others 
- *  Create a Sandbox project/Git Repo for project
- *  http://blog.teamtreehouse.com/getting-started-speech-synthesis-api
- *
- *  http://stackoverflow.com/questions/21513706/getting-the-list-of-voices-in-speechsynthesis-of-chrome-web-speech-api
- *  http://responsivevoice.org/
- */
 
-/**
- * Implements hook_help().
- */
 
 function webspeech_tts_menu() {
+  $items = array();
   $items['webspeech_tts'] = array(
     'title' => t('Webspeech TTS for Chrome'),
     'description' => t('Read Node Content Out Loud'),
     'type' => MENU_CALLBACK,
     'page callback' => 'webspeech_tts_form',
+    //'page arguments' => array('webspeech_tts_form');
     //https://www.drupal.org/node/457782
-    'access arguments' => array('administer webspeech_tts'),
+    //'access arguments' => array('administer webspeech_tts'),
     'access callback' => TRUE,
   );
 
-  $items['admin/structure/webspeech_tts'] = array(
-    'title' => 'webspeech_tts',
-    'description' => 'Get the content of a Node, send it to JS for WebSpeech',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('webspeech_tts_admin'),
-    'access arguments' => array('administer webspeech_tts'),
-    //'file' => 'includes/webspeech_tts.inc',
-  );
-
   return $items;
-}
-
-function webspeech_tts_help($path, $arg) {
-  $output = '';  //declare your output variable
-  switch ($path) {
-    case "admin/help#webspeech_tts":
-      $output = '<p>'.  t("Click a button to hear the Node contoent") .'</p>';
-      break;
-  }
-  return $output;
-} 
-
-
-function webspeech_tts_cb() {
-
-
-$node = node_load(1);
-$node_content_to_js = $node->body['und'][0]['value'];
-drupal_set_message($node_content_to_js);drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
-drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
-
-drupal_set_message("foo" );
-
-  print '<pre>';
-    var_dump(get_defined_vars());
-  print '</pre>';
-
-
 
 }
+
 
 function webspeech_tts_form($form, &$form_state){
-
+  drupal_set_message('hello');
  // drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js', array('weight' => 100));
-
   $node = node_load(1);
   $node_content_to_js = $node->body['und'][0]['value'];
   drupal_set_message($node_content_to_js);
@@ -98,7 +32,7 @@ function webspeech_tts_form($form, &$form_state){
   drupal_set_message("foo" );
 
   print '<pre>';
-  var_dump(get_defined_vars());
+ // var_dump(get_defined_vars());
   print '</pre>';
 
 
@@ -114,28 +48,9 @@ function webspeech_tts_form($form, &$form_state){
   return $form;
 }
 
-
-/**
- * Implements hook_permission().
- */
-
-function webspeech_tts_permission() {
-  return array(
-    'administer webspeech_tts' => array(
-      'title' => t('Administer webspeech_tts'),
-      'description' => t('Change the settings for how webspeech_tts behaves on the site.'),
-    ),
-  );
+function webspeech_tts_node_view($node, $view_mode) {
+    drupal_set_message("You are viewing a node");
 }
 
- /**
- * This is the main configuration form for the admin page.
- */
 
-
-//function webspeech_tts_admin() {
-
-
-
-//}
   

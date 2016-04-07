@@ -6,7 +6,7 @@ version = 0.1-dev
 ;dependencies[] = Libraries
 ;dependencies[] = block
 
-;scripts[] = myjs.js - reserved for possible browser detection
+scripts[] = webspeech_tts.js
 ;configure = admin/config/content/webspeech_tts
 
 
