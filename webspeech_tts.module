@@ -1,55 +1,87 @@
 <?php
 
-
-
 function webspeech_tts_menu() {
   $items = array();
-  $items['webspeech_tts'] = array(
+  $items['node/%/webspeech_tts'] = array(
     'title' => t('Webspeech TTS for Chrome'),
-    'description' => t('Read Node Content Out Loud'),
-    'type' => MENU_CALLBACK,
-    'page callback' => 'webspeech_tts_form',
-    //'page arguments' => array('webspeech_tts_form');
-    //https://www.drupal.org/node/457782
+    'description' => t('Option to Read Node Content Out Loud'),
+    'type' => MENU_LOCAL_TASK,
+    //http://drupal.stackexchange.com/questions/30357/why-do-i-get-these-errors-in-my-module
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('webspeech_tts_form'),
     //'access arguments' => array('administer webspeech_tts'),
     'access callback' => TRUE,
   );
 
+  $items['admin/config/content/webspeech_tts'] = array(
+    'title' => t('Webspeech TTS for Chrome'),
+    'description' => t('Option to Read Node Content Out Loud'),
+    'page callback' => 'webspeech_tts_admin',
+    'access arguments' => array('administer webspeech_tts'),
+    'type' => MENU_NORMAL_ITEM,
+    );
   return $items;
+}
 
+function webspeech_tts_permission() {
+  return array(
+    'administer webspeech_tts' => array(
+      'title' => t('Administer webspeech_tts'),
+      'description' => t('Change the settings for how Webspeech TTS behaves on the site.'),
+    ),
+  );
+}
+
+function webspeech_tts_admin() {
+
+  $form['webspeech_tts_types'] = array(
+      '#title' => t('The content types to enable webspeech_tts for'),
+      '#description' => t('On the specified node types, a Webspeech TTS option will be available and can be enabled while that node is being edited.'),    
+      '#type' => 'checkbox',   
+      '#options' => array( 0 => t('English'), 1 => t('French'), 2 => t('German')), 
+      );  
+
+  $form['webspeech_tts_language'] = array(
+      '#type' => 'select',
+      '#options' => array( 0 => t('English'), 1 => t('French'), 2 => t('German')),
+      '#title' => t('Language'),
+    );
+
+  $form['#submit'][] = 'webspeech_tts_form_submit';
+  return system_settings_form($form);
 }
 
 
 function webspeech_tts_form($form, &$form_state){
-  drupal_set_message('hello');
- // drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js', array('weight' => 100));
-  $node = node_load(1);
+
+
+  $path_args = explode('/', current_path());  
+  $node = node_load((int)$path_args[1]);
   $node_content_to_js = $node->body['und'][0]['value'];
-  drupal_set_message($node_content_to_js);
+  drupal_static_reset('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
+  //http://drupal.stackexchange.com/questions/128243/drupal-add-js-settings-and-working-around-the-anonymous-page-cache
+  //http://dominiquedecooman.com/blog/drupal-7-hook-implementations-are-cached-database  
+  //drupal_set_message($node_content_to_js);
   drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
   drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
 
-  drupal_set_message("foo" );
-
   print '<pre>';
- // var_dump(get_defined_vars());
+ //var_dump(get_defined_vars());
   print '</pre>';
 
 
-  drupal_set_message("made it to form");
   $form['submit_button'] = array(
       '#type' => 'submit',
-      '#value' => t('Click Here!'),
+      '#value' => t('Read Text Aloud'),
       '#action' => url('#'),
       '#attributes' => array('onclick' => 'return (false);'),
-      //'#disabled' => TRUE,
   );
 
   return $form;
 }
 
 function webspeech_tts_node_view($node, $view_mode) {
-    drupal_set_message("You are viewing a node");
+    //drupal_set_message("You are viewing a node");
 }
 
 

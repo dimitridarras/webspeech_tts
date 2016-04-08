@@ -5,7 +5,7 @@ package  = Web Speech TTS Drupal
 version = 0.1-dev
 ;dependencies[] = Libraries
 ;dependencies[] = block
-;configure = admin/config/content/webspeech_tts
+configure = admin/config/content/webspeech_tts
 scripts[] = webspeech_tts.js
 
 
