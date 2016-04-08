@@ -9,15 +9,16 @@ function webspeech_tts_menu() {
     //http://drupal.stackexchange.com/questions/30357/why-do-i-get-these-errors-in-my-module
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webspeech_tts_form'),
-    //'access arguments' => array('administer webspeech_tts'),
     'access callback' => TRUE,
   );
 
   $items['admin/config/content/webspeech_tts'] = array(
-    'title' => t('Webspeech TTS for Chrome'),
-    'description' => t('Option to Read Node Content Out Loud'),
-    'page callback' => 'webspeech_tts_admin',
+    'title' => t('Webspeech TTS for Chrome Settings'),
+    'description' => t('Administer Webspeech TTS for Chrome'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('webspeech_tts_admin_settings_form'),
     'access arguments' => array('administer webspeech_tts'),
+    'file' => 'webspeech_tts.admin.inc',
     'type' => MENU_NORMAL_ITEM,
     );
   return $items;
@@ -31,26 +32,6 @@ function webspeech_tts_permission() {
     ),
   );
 }
-
-function webspeech_tts_admin() {
-
-  $form['webspeech_tts_types'] = array(
-      '#title' => t('The content types to enable webspeech_tts for'),
-      '#description' => t('On the specified node types, a Webspeech TTS option will be available and can be enabled while that node is being edited.'),    
-      '#type' => 'checkbox',   
-      '#options' => array( 0 => t('English'), 1 => t('French'), 2 => t('German')), 
-      );  
-
-  $form['webspeech_tts_language'] = array(
-      '#type' => 'select',
-      '#options' => array( 0 => t('English'), 1 => t('French'), 2 => t('German')),
-      '#title' => t('Language'),
-    );
-
-  $form['#submit'][] = 'webspeech_tts_form_submit';
-  return system_settings_form($form);
-}
-
 
 function webspeech_tts_form($form, &$form_state){
 
