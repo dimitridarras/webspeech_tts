@@ -1,0 +1,16 @@
+<?
+
+$schema['webspeech_tts_enabled'] = array(
+    'description' => 'Tracks whether Webspeech TTS is enabled for a given node.',    
+    'fields' => array(      
+    	'nid' => array(
+        'description' => 'The {node}.nid that has Webspeech TTS enabled.',        
+        'type' => 'int',        
+        'not null' => TRUE,        
+        'default' => 0,      
+         ),   
+    ),   
+
+    'primary key' => array('nid'),  
+
+    );	
