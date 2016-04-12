@@ -1,21 +1,25 @@
 
-(function ($) {
+(function ($) { 
+  speechSynthesis.onvoiceschanged = function (){
+}      
+
   Drupal.behaviors.webspeech_tts = {
     attach: function () {
+      var voices = speechSynthesis.getVoices();
+      //console.log(voices);
+
       $('.form-submit').click(function () {
         // Chrome loads voices asynchronously.
-        window.speechSynthesis.onvoiceschanged = function(e) {
-        loadVoices();
-        };
+        //console.log(voices);
 
-        render_voice = Drupal.settings.webspeech_tts.proof_of_concept;
+        var render_voice = Drupal.settings.webspeech_tts.proof_of_concept;
+    
         var msg = new SpeechSynthesisUtterance(render_voice);
-       // http://jsbin.com/gosaqihi/9/edit?js,console
-       // msg.lang = 'ja-JP'; 
-       msg.voice = 'Fiona';
+        //replace name and array value with form vars
+        msg.voice = voices.filter(function(voice) {return voice.name = 'Agnes'})[2];
+        console.log(msg.voice);
+     
         window.speechSynthesis.speak(msg);
-
-
 
       });
     }
