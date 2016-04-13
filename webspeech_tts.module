@@ -13,7 +13,7 @@ function webspeech_tts_menu() {
   );
 
   $items['admin/config/content/webspeech_tts'] = array(
-    'title' => t('Webspeech TTS for Chrome Settings'),
+    'title' => t('Webspeech TTS for Chrome'),
     'description' => t('Administer Webspeech TTS for Chrome'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webspeech_tts_admin_settings_form'),
@@ -34,7 +34,10 @@ function webspeech_tts_permission() {
 }
 
 function webspeech_tts_form($form, &$form_state){
-
+  //get form settings vars
+  $lang = variable_get('webspeech_tts_accents', 'accents');
+  //drupal_set_message($message);
+   drupal_add_js(array('webspeech_tts' => array('the_lang' => $lang)), 'setting');
 
   $path_args = explode('/', current_path());  
   $node = node_load((int)$path_args[1]);

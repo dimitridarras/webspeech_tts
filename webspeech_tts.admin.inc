@@ -1,12 +1,7 @@
 <?
 
 function webspeech_tts_admin_settings_form() {
-/*
 
-  $form['#submit'][] = 'webspeech_tts_form_submit';
-  return system_settings_form($form);
-
-  */
 
   $form = array();  
   $form['webspeech_tts_types'] = array(
@@ -18,16 +13,63 @@ function webspeech_tts_admin_settings_form() {
         '#default_value' => variable_get('webspeech_tts_types',
        array()),  );  
 
+//$language = echo("<script language='javascript'>alert('foo');</script>");
+//drupal_set_message(($language));
+//http://stackoverflow.com/questions/4060545/how-do-i-capture-the-result-of-an-echo-into-a-variable-in-php
+//Just don't think this is a good idea right now (using php to print JS array vals)
+
+
+ $accents = array(
+        'en-US' => t('English'), 
+        'it-IT' => t('Italian'), 
+        't(Swedish)' => "sv-SE", 
+        't(French)' => "fr-CA", 
+        't(German)' => "de-DE", 
+        't(Italian)' => "he-IL", 
+        'id' => "id-ID", 
+        't(English - British)' => "en-GB", 
+        't(Spanish)' => "es-AR", 
+        't(Dutch)' => "nl-BE", 
+        't(English)' => "en", 
+        't(Romanian)' => "ro-RO", 
+        't(Portuguese - Portugal)' => "pt-PT", 
+        'th' => "th-TH", 
+        't(English - Australian)' => "en-AU", 
+        't(Japanese)' => "ja-JP", 
+        'sk' => "sk-SK", 
+        'hi' => "hi-IN", 
+        't(Portuguese - Brazil)'=>  "pt-BR", 
+        'ar' => "ar-SA", 
+        't(Hungarian)' => "hu-HU", 
+        'zh' => "zh-TW", 
+        't(Greek)' => "el-GR", 
+        't(Russian)' => "ru-RU", 
+        'en' => "en-IE", 
+        't(Spanish - Spain)' => "es-ES", 
+        'nb' => "nb-NO", 
+        't(Spanish - Mexico)' => "es-MX", 
+        't(Danish)' => "da-DK", 
+        't(Finish)' => "fi-FI", 
+        't(Cantonese - Hong Kong)' => "zh-HK", 
+        't(English - South Africa)' => "en-ZA", 
+        't(French)' => "fr-FR", 
+        't(Canotonese - China)' => "zh-CN", 
+        't(English - India)' => "en-IN", 
+        't(Netherlands)' => "nl-NL", 
+        'tr' => "tr-TR", 
+        'ko' => "ko-KR", 
+        't(Polish)' => "pl-PL", 
+        'cs' => "cs-CZ", 
+        't(English - United States)' => "es-US",
+      );
+
+
+
   $form['webspeech_tts_accents'] = array(
       '#type' => 'select',
       '#title' => t('Accents'),
       '#description' => t('Choose an accent'), 
-      '#options' => array( 0 => 'en-US', 1 => 'it-IT', 2 => 'sv-SE'),
-/*
-
-["en-US", "it-IT", "sv-SE", "fr-CA", "de-DE", "he-IL", "id-ID", "en-GB", "es-AR", "nl-BE", "en", "ro-RO", "pt-PT", "th-TH", "en-AU", "ja-JP", "sk-SK", "hi-IN", "pt-BR", "ar-SA", "hu-HU", "zh-TW", "el-GR", "ru-RU", "en-IE", "es-ES", "nb-NO", "es-MX", "da-DK", "fi-FI", "zh-HK", "en-ZA", "fr-FR", "zh-CN", "en-IN", "nl-NL", "tr-TR", "ko-KR", "pl-PL", "cs-CZ", "es-US"]
-
-*/
+      '#options' => $accents,      
     );
 
     $form['webspeech_tts_names'] = array(  
