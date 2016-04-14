@@ -13,12 +13,17 @@ function webspeech_tts_admin_settings_form() {
         '#default_value' => variable_get('webspeech_tts_types',
        array()),  );  
 
-//$language = echo("<script language='javascript'>alert('foo');</script>");
+//$language = echo('<script language='javascript'>alert('foo');</script>');
 //drupal_set_message(($language));
 //http://stackoverflow.com/questions/4060545/how-do-i-capture-the-result-of-an-echo-into-a-variable-in-php
 //Just don't think this is a good idea right now (using php to print JS array vals)
 
  $accents = array(
+            'Google US English' => 'Google US English', 
+    'Google UK English Female' => 'Google UK English Female',   
+    'Google UK English Female' => 'Google UK English Female', 
+    'Google UK English Male' => 'Google UK English Male', 
+    'Google UK English Male' => 'Google UK English Male', 
         'en-US' => t('English'), 
         'it-IT' => t('Italian'), 
         'sv-SE' => t('Swedish'), 
@@ -40,7 +45,7 @@ function webspeech_tts_admin_settings_form() {
         'pt-BRt'=>  t('Portuguese - Brazil'), 
         'ar-SA' => t('Arabic'), 
         'hu-HU' => t('Hungarian'), 
-        //'zh' => "zh-TW", What is this?
+        //'zh' => 'zh-TW', What is this?
         'el-GR' => t('Greek'), 
         'ru-RU' => t('Russian'), 
         'en-IE' => t('English - Ireland'), 
@@ -68,127 +73,115 @@ function webspeech_tts_admin_settings_form() {
       '#options' => $accents,      
     );
 
+    $voices = array(
 
-    $form['webspeech_tts_names'] = array(  
+    'Alex' => 'Alex', 
+    'Agnes' => 'Agnes', 
+    'Albert' => 'Albert', 
+    'Alice' => 'Alice', 
+    'Alva' => 'Alva', 
+    'Amelie' => 'Amelie', 
+    'Anna' => 'Anna', 
+    'Bad News' => 'Bad News', 
+    'Bahh' => 'Bahh', 
+    'Bells' => 'Bells', 
+    'Boing' => 'Boing', 
+    'Bruce' => 'Bruce', 
+    'Bubbles' => 'Bubbles', 
+    'Carmit' => 'Carmit', 
+    'Cellos' => 'Cellos', 
+    'Damayanti' => 'Damayanti', 
+    'Daniel' => 'Daniel', 
+    'Deranged' => 'Deranged', 
+    'Diego' => 'Diego', 
+    'Ellen' => 'Ellen', 
+    'Fiona' => 'Fiona', 
+    'Fred' => 'Fred', 
+    'Good News' => 'Good News', 
+    'Hysterical' => 'Hysterical', 
+    'Ioana' => 'Ioana', 
+    'Joana' => 'Joana', 
+    'Junior' => 'Junior', 
+    'Kanya' => 'Kanya', 
+    'Karen' => 'Karen', 
+    'Kathy' => 'Kathy', 
+    'Kyoko' => 'Kyoko', 
+    'Laura' => 'Laura', 
+    'Lekha' => 'Lekha', 
+    'Luciana' => 'Luciana', 
+    'Maged' => 'Maged', 
+    'Mariska' => 'Mariska', 
+    'Mei-Jia' => 'Mei-Jia', 
+    'Melina' => 'Melina', 
+    'Milena' => 'Milena', 
+    'Moira' => 'Moira', 
+    'Monica' => 'Monica', 
+    'Nora' => 'Nora', 
+    'Paulina' => 'Paulina', 
+    'Pipe Organ' => 'Pipe Organ', 
+    'Princess' => 'Princess', 
+    'Ralph' => 'Ralph', 
+    'Samantha' => 'Samantha', 
+    'Sara' => 'Sara', 
+    'Satu' => 'Satu', 
+    'Sin-ji' => 'Sin-ji', 
+    'Tessa' => 'Tessa', 
+    'Thomas' => 'Thomas', 
+    'Ting-Ting' => 'Ting-Ting', 
+    'Trinoids' => 'Trinoids', 
+    'Veena' => 'Veena', 
+    'Vicki' => 'Vicki', 
+    'Victoria' => 'Victoria', 
+    'Whisper' => 'Whisper', 
+    'Xander' => 'Xander', 
+    'Yelda' => 'Yelda', 
+    'Yuna' => 'Yuna', 
+    'Zarvox' => 'Zarvox', 
+    'Zosia' => 'Zosia', 
+    'Zuzana' => 'Zuzana', 
+    );
+
+    $form['webspeech_tts_voices'] = array(  
       '#title' => t('Voices'),
       //http://jsbin.com/gosaqihi/9/edit?js,console
     '#description' => t('Choose a persona'),    
     '#type' => 'select',
     '#align' => 'left',
-    '#options' => array( '0.3' => 1, '0.6' => 2, '0.9'   => 3),
+    '#options' => $voices,
     '#required' => false,
     );  
 
-$voices = array(
+    $translated_lang = array(
 
-"Alex", 
-"Agnes", 
-"Albert", 
-"Alice", 
-"Alva", 
-"Amelie", 
-"Anna", 
-"Bad News", 
-"Bahh", 
-"Bells", 
-"Boing", 
-"Bruce", 
-"Bubbles", 
-"Carmit", 
-"Cellos", 
-"Damayanti", 
-"Daniel", 
-"Deranged", 
-"Diego", 
-"Ellen", 
-"Fiona", 
-"Fred", 
-"Good News", 
-"Hysterical", 
-"Ioana", 
-"Joana", 
-"Junior", 
-"Kanya", 
-"Karen", 
-"Kathy", 
-"Kyoko", 
-"Laura", 
-"Lekha", 
-"Luciana", 
-"Maged", 
-"Mariska", 
-"Mei-Jia", 
-"Melina", 
-"Milena", 
-"Moira", 
-"Monica", 
-"Nora", 
-"Paulina", 
-"Pipe Organ", 
-"Princess", 
-"Ralph", 
-"Samantha", 
-"Sara", 
-"Satu", 
-"Sin-ji", 
-"Tessa", 
-"Thomas", 
-"Ting-Ting", 
-"Trinoids", 
-"Veena", 
-"Vicki", 
-"Victoria", 
-"Whisper", 
-"Xander", 
-"Yelda", 
-"Yuna", 
-"Zarvox", 
-"Zosia", 
-"Zuzana", 
-"Google Deutsch", 
-"Google US English", 
-"Google UK English Female", 
-"Google UK English Male", 
-"Google español", 
-"Google español de Estados Unidos", 
-"Google français", 
-"Google हिन्दी", 
-"Google Bahasa Indonesia", 
-"Google italiano", 
-"Google 日本語", 
-"Google 한국의", 
-"Google Nederlands", 
-"Google polski", 
-"Google português do Brasil", 
-"Google русский", 
-"Google 普通话（中国大陆）", 
-"Google 粤語（香港）", 
-"Google 國語（臺灣）"
+    'Google Deutsch' => 'Google Deutsch', 
+    'Google español' => 'Google español', 
+    'Google español de Estados Unidos' => 'Google español de Estados Unidos', 
+    'Google français' => 'Google français', 
+    'Google हिन्दी' => 'Google हिन्दी', 
+    'Google Bahasa Indonesia' => 'Google Bahasa Indonesia', 
+    'Google italiano' => 'Google italiano', 
+    'Google 日本語' => 'Google 日本語', 
+    'Google 한국의' => 'Google 한국의', 
+    'Google Nederlands'  => 'Google Nederlands', 
+    'Google polski' => 'Google polski', 
+    'Google português do Brasil'  => 'Google português do Brasil', 
+    'Google русский'  => 'Google русский', 
+    'Google 普通话（中国大陆）'  => 'Google 普通话（中国大陆）', 
+    'Google 粤語（香港）'  => 'Google 粤語（香港）', 
+    'Google 國語（臺灣）'  => 'Google 國語（臺灣）',
+      );
 
 
-
-
-  );
-
-
-
-
-    $form['webspeech_tts_voice'] = array(  
-      '#title' => t('Voices'),
+    $form['webspeech_tts_translated_lang'] = array(  
+      '#title' => t('Translated Lanagues'),
       //http://jsbin.com/gosaqihi/9/edit?js,console
-    '#description' => t('Choose a voice'),    
+    '#description' => t('Choose a language - limited support'),    
     '#type' => 'select',
     '#align' => 'left',
-    '#options' => array( '0.3' => 1, '0.6' => 2, '0.9'   => 3),
+    '#options' => $translated_lang,
     '#required' => false,
     );
 
-/*
-
-["Alex", "Agnes", "Albert", "Alice", "Alva", "Amelie", "Anna", "Bad News", "Bahh", "Bells", "Boing", "Bruce", "Bubbles", "Carmit", "Cellos", "Damayanti", "Daniel", "Deranged", "Diego", "Ellen", "Fiona", "Fred", "Good News", "Hysterical", "Ioana", "Joana", "Junior", "Kanya", "Karen", "Kathy", "Kyoko", "Laura", "Lekha", "Luciana", "Maged", "Mariska", "Mei-Jia", "Melina", "Milena", "Moira", "Monica", "Nora", "Paulina", "Pipe Organ", "Princess", "Ralph", "Samantha", "Sara", "Satu", "Sin-ji", "Tessa", "Thomas", "Ting-Ting", "Trinoids", "Veena", "Vicki", "Victoria", "Whisper", "Xander", "Yelda", "Yuna", "Zarvox", "Zosia", "Zuzana", "Google Deutsch", "Google US English", "Google UK English Female", "Google UK English Male", "Google español", "Google español de Estados Unidos", "Google français", "Google हिन्दी", "Google Bahasa Indonesia", "Google italiano", "Google 日本語", "Google 한국의", "Google Nederlands", "Google polski", "Google português do Brasil", "Google русский", "Google 普通话（中国大陆）", "Google 粤語（香港）", "Google 國語（臺灣）"]
-
-
-*/
 
   $form['webspeech_tts_volume'] = array(
     '#title' => t('Volume'),
@@ -219,10 +212,7 @@ $voices = array(
     );
 
 
-
   return system_settings_form($form);
-
-
 
 
 }
