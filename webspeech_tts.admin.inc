@@ -22,7 +22,7 @@ function webspeech_tts_admin_settings_form() {
         'en-US' => t('English'), 
         'it-IT' => t('Italian'), 
         'sv-SE' => t('Swedish'), 
-        't(French)' => "fr-CA", 
+        'fr-CA' => t('French'), 
         't(German)' => "de-DE", 
         't(Italian)' => "he-IL", 
         'id' => "id-ID", 
