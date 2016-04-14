@@ -18,11 +18,10 @@ function webspeech_tts_admin_settings_form() {
 //http://stackoverflow.com/questions/4060545/how-do-i-capture-the-result-of-an-echo-into-a-variable-in-php
 //Just don't think this is a good idea right now (using php to print JS array vals)
 
-
  $accents = array(
         'en-US' => t('English'), 
         'it-IT' => t('Italian'), 
-        't(Swedish)' => "sv-SE", 
+        'sv-SE' => t('Swedish'), 
         't(French)' => "fr-CA", 
         't(German)' => "de-DE", 
         't(Italian)' => "he-IL", 
