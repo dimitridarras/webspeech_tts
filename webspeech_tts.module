@@ -6,7 +6,6 @@ function webspeech_tts_menu() {
     'title' => t('Webspeech TTS for Chrome'),
     'description' => t('Option to Read Node Content Out Loud'),
     'type' => MENU_LOCAL_TASK,
-    //http://drupal.stackexchange.com/questions/30357/why-do-i-get-these-errors-in-my-module
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webspeech_tts_form'),
     'access callback' => TRUE,
@@ -34,18 +33,31 @@ function webspeech_tts_permission() {
 }
 
 function webspeech_tts_form($form, &$form_state){
-  //get form settings vars
-  $lang = variable_get('webspeech_tts_accents', 'accents');
+
+  //$tts_lang = variable_get('webspeech_tts_accents', 'accents');
+  $tts_accents = variable_get('webspeech_tts_accents', 'accents');
+  $tts_voices = variable_get('webspeech_tts_voice', 'voices');
+  $tts_translated_lang = variable_get('webspeech_tts_translated_lang', 'translated_lang');
+  $tts_vol = variable_get('webspeech_tts_volume', 'volume');
+  $tts_rate = variable_get('webspeech_tts_rate', 'rate');
+  $tts_pitch = variable_get('webspeech_tts_pitch', 'pitch');
+
+
   //drupal_set_message($message);
-   drupal_add_js(array('webspeech_tts' => array('the_lang' => $lang)), 'setting');
+  
+  drupal_add_js(array('webspeech_tts' => array('tts_accent_js' => $tts_accents)), 'setting');
+  drupal_add_js(array('webspeech_tts' => array('tts_voices_js' => $tts_voices)), 'setting');
+  drupal_add_js(array('webspeech_tts' => array('tts_translated_lang_js' => $tts_translated_lang)), 'setting');
+  drupal_add_js(array('webspeech_tts' => array('tts_volume_js' => $tts_vol)), 'setting');
+  drupal_add_js(array('webspeech_tts' => array('tts_rate_js' => $tts_rate)), 'setting');
+  drupal_add_js(array('webspeech_tts' => array('tts_pitch_js' => $tts_pitch)), 'setting');
 
   $path_args = explode('/', current_path());  
   $node = node_load((int)$path_args[1]);
   $node_content_to_js = $node->body['und'][0]['value'];
+
   drupal_static_reset('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
-  //http://drupal.stackexchange.com/questions/128243/drupal-add-js-settings-and-working-around-the-anonymous-page-cache
-  //http://dominiquedecooman.com/blog/drupal-7-hook-implementations-are-cached-database  
-  //drupal_set_message($node_content_to_js);
+
   drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
   drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
 
