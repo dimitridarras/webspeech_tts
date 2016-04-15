@@ -1,4 +1,4 @@
-<?
+<?php
 
 $schema['webspeech_tts_enabled'] = array(
     'description' => 'Tracks whether Webspeech TTS is enabled for a given node.',    
