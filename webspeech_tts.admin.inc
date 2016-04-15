@@ -13,17 +13,9 @@ function webspeech_tts_admin_settings_form() {
         '#default_value' => variable_get('webspeech_tts_types',
        array()),  );  
 
-//$language = echo('<script language='javascript'>alert('foo');</script>');
-//drupal_set_message(($language));
-//http://stackoverflow.com/questions/4060545/how-do-i-capture-the-result-of-an-echo-into-a-variable-in-php
-//Just don't think this is a good idea right now (using php to print JS array vals)
 
- $accents = array(
-            'Google US English' => 'Google US English', 
-    'Google UK English Female' => 'Google UK English Female',   
-    'Google UK English Female' => 'Google UK English Female', 
-    'Google UK English Male' => 'Google UK English Male', 
-    'Google UK English Male' => 'Google UK English Male', 
+ $lang_accent = array(
+
         'en-US' => t('English'), 
         'it-IT' => t('Italian'), 
         'sv-SE' => t('Swedish'), 
@@ -66,121 +58,111 @@ function webspeech_tts_admin_settings_form() {
         'es-US' => t('English - United States'),
       );
 
-  $form['webspeech_tts_accents'] = array(
+  $form['webspeech_tts_lang_accent'] = array(
       '#type' => 'select',
-      '#title' => t('Accents'),
-      '#description' => t('Choose an accent'), 
-      '#options' => $accents,      
+      '#title' => t('Languages & Accents'),
+      '#description' => t('Choose a language or accent'), 
+      '#options' => $lang_accent,      
     );
 
-    $voices = array(
-
-    'Alex' => 'Alex', 
-    'Agnes' => 'Agnes', 
-    'Albert' => 'Albert', 
-    'Alice' => 'Alice', 
-    'Alva' => 'Alva', 
-    'Amelie' => 'Amelie', 
-    'Anna' => 'Anna', 
-    'Bad News' => 'Bad News', 
-    'Bahh' => 'Bahh', 
-    'Bells' => 'Bells', 
-    'Boing' => 'Boing', 
-    'Bruce' => 'Bruce', 
-    'Bubbles' => 'Bubbles', 
-    'Carmit' => 'Carmit', 
-    'Cellos' => 'Cellos', 
-    'Damayanti' => 'Damayanti', 
-    'Daniel' => 'Daniel', 
-    'Deranged' => 'Deranged', 
-    'Diego' => 'Diego', 
-    'Ellen' => 'Ellen', 
-    'Fiona' => 'Fiona', 
-    'Fred' => 'Fred', 
-    'Good News' => 'Good News', 
-    'Hysterical' => 'Hysterical', 
-    'Ioana' => 'Ioana', 
-    'Joana' => 'Joana', 
-    'Junior' => 'Junior', 
-    'Kanya' => 'Kanya', 
-    'Karen' => 'Karen', 
-    'Kathy' => 'Kathy', 
-    'Kyoko' => 'Kyoko', 
-    'Laura' => 'Laura', 
-    'Lekha' => 'Lekha', 
-    'Luciana' => 'Luciana', 
-    'Maged' => 'Maged', 
-    'Mariska' => 'Mariska', 
-    'Mei-Jia' => 'Mei-Jia', 
-    'Melina' => 'Melina', 
-    'Milena' => 'Milena', 
-    'Moira' => 'Moira', 
-    'Monica' => 'Monica', 
-    'Nora' => 'Nora', 
-    'Paulina' => 'Paulina', 
-    'Pipe Organ' => 'Pipe Organ', 
-    'Princess' => 'Princess', 
-    'Ralph' => 'Ralph', 
-    'Samantha' => 'Samantha', 
-    'Sara' => 'Sara', 
-    'Satu' => 'Satu', 
-    'Sin-ji' => 'Sin-ji', 
-    'Tessa' => 'Tessa', 
-    'Thomas' => 'Thomas', 
-    'Ting-Ting' => 'Ting-Ting', 
-    'Trinoids' => 'Trinoids', 
-    'Veena' => 'Veena', 
-    'Vicki' => 'Vicki', 
-    'Victoria' => 'Victoria', 
-    'Whisper' => 'Whisper', 
-    'Xander' => 'Xander', 
-    'Yelda' => 'Yelda', 
-    'Yuna' => 'Yuna', 
-    'Zarvox' => 'Zarvox', 
-    'Zosia' => 'Zosia', 
-    'Zuzana' => 'Zuzana', 
+    $voice_array = array(
+       /* 'Google US English' => 'Google US English', 
+        'Google Deutsch' => 'Google Deutsch', 
+        'Google español' => 'Google español', 
+        'Google español de Estados Unidos' => 'Google español de Estados Unidos', 
+        'Google français' => 'Google français', 
+        'Google हिन्दी' => 'Google हिन्दी', 
+        'Google Bahasa Indonesia' => 'Google Bahasa Indonesia', 
+        'Google italiano' => 'Google italiano', 
+        'Google 日本語' => 'Google 日本語', 
+        'Google 한국의' => 'Google 한국의', 
+        'Google Nederlands'  => 'Google Nederlands', 
+        'Google polski' => 'Google polski', 
+        'Google português do Brasil'  => 'Google português do Brasil', 
+        'Google русский'  => 'Google русский', 
+        'Google 普通话（中国大陆）'  => 'Google 普通话（中国大陆）', 
+        'Google 粤語（香港）'  => 'Google 粤語（香港）', 
+        'Google 國語（臺灣）'  => 'Google 國語（臺灣）',
+        'Google US English' => t('Google US English'), 
+        'Google UK English Female' => t('Google UK English Female'),   
+        'Google UK English Female' => t('Google UK English Female'), 
+        'Google UK English Male' => t('Google UK English Male'), 
+        'Google UK English Male' => t('Google UK English Male'), */
+        'Alex' => 'Alex', 
+        'Agnes' => 'Agnes', 
+        'Albert' => 'Albert', 
+        'Alice' => 'Alice', 
+        'Alva' => 'Alva', 
+        'Amelie' => 'Amelie', 
+        'Anna' => 'Anna', 
+        'Bad News' => 'Bad News', 
+        'Bahh' => 'Bahh', 
+        'Bells' => 'Bells', 
+        'Boing' => 'Boing', 
+        'Bruce' => 'Bruce', 
+        'Bubbles' => 'Bubbles', 
+        'Carmit' => 'Carmit', 
+        'Cellos' => 'Cellos', 
+        'Damayanti' => 'Damayanti', 
+        'Daniel' => 'Daniel', 
+        'Deranged' => 'Deranged', 
+        'Diego' => 'Diego', 
+        'Ellen' => 'Ellen', 
+        'Fiona' => 'Fiona', 
+        'Fred' => 'Fred', 
+        'Good News' => 'Good News', 
+        'Hysterical' => 'Hysterical', 
+        'Ioana' => 'Ioana', 
+        'Joana' => 'Joana', 
+        'Junior' => 'Junior', 
+        'Kanya' => 'Kanya', 
+        'Karen' => 'Karen', 
+        'Kathy' => 'Kathy', 
+        'Kyoko' => 'Kyoko', 
+        'Laura' => 'Laura', 
+        'Lekha' => 'Lekha', 
+        'Luciana' => 'Luciana', 
+        'Maged' => 'Maged', 
+        'Mariska' => 'Mariska', 
+        'Mei-Jia' => 'Mei-Jia', 
+        'Melina' => 'Melina', 
+        'Milena' => 'Milena', 
+        'Moira' => 'Moira', 
+        'Monica' => 'Monica', 
+        'Nora' => 'Nora', 
+        'Paulina' => 'Paulina', 
+        'Pipe Organ' => 'Pipe Organ', 
+        'Princess' => 'Princess', 
+        'Ralph' => 'Ralph', 
+        'Samantha' => 'Samantha', 
+        'Sara' => 'Sara', 
+        'Satu' => 'Satu', 
+        'Sin-ji' => 'Sin-ji', 
+        'Tessa' => 'Tessa', 
+        'Thomas' => 'Thomas', 
+        'Ting-Ting' => 'Ting-Ting', 
+        'Trinoids' => 'Trinoids', 
+        'Veena' => 'Veena', 
+        'Vicki' => 'Vicki', 
+        'Victoria' => 'Victoria', 
+        'Whisper' => 'Whisper', 
+        'Xander' => 'Xander', 
+        'Yelda' => 'Yelda', 
+        'Yuna' => 'Yuna', 
+        'Zarvox' => 'Zarvox', 
+        'Zosia' => 'Zosia', 
+        'Zuzana' => 'Zuzana', 
     );
 
-    $form['webspeech_tts_voices'] = array(  
-      '#title' => t('Voices'),
-      //http://jsbin.com/gosaqihi/9/edit?js,console
-    '#description' => t('Choose a persona'),    
-    '#type' => 'select',
-    '#align' => 'left',
-    '#options' => $voices,
-    '#required' => false,
+    $form['webspeech_tts_voice'] = array(  
+        '#title' => t('Voices'),
+        //http://jsbin.com/gosaqihi/9/edit?js,console
+        '#description' => t('Choose a persona'),    
+        '#type' => 'select',
+        '#align' => 'left',
+        '#options' => $voice_array,
+        '#required' => false,
     );  
-
-    $translated_lang = array(
-
-    'Google Deutsch' => 'Google Deutsch', 
-    'Google español' => 'Google español', 
-    'Google español de Estados Unidos' => 'Google español de Estados Unidos', 
-    'Google français' => 'Google français', 
-    'Google हिन्दी' => 'Google हिन्दी', 
-    'Google Bahasa Indonesia' => 'Google Bahasa Indonesia', 
-    'Google italiano' => 'Google italiano', 
-    'Google 日本語' => 'Google 日本語', 
-    'Google 한국의' => 'Google 한국의', 
-    'Google Nederlands'  => 'Google Nederlands', 
-    'Google polski' => 'Google polski', 
-    'Google português do Brasil'  => 'Google português do Brasil', 
-    'Google русский'  => 'Google русский', 
-    'Google 普通话（中国大陆）'  => 'Google 普通话（中国大陆）', 
-    'Google 粤語（香港）'  => 'Google 粤語（香港）', 
-    'Google 國語（臺灣）'  => 'Google 國語（臺灣）',
-      );
-
-
-    $form['webspeech_tts_translated_lang'] = array(  
-      '#title' => t('Translated Lanagues'),
-      //http://jsbin.com/gosaqihi/9/edit?js,console
-    '#description' => t('Choose a language - limited support'),    
-    '#type' => 'select',
-    '#align' => 'left',
-    '#options' => $translated_lang,
-    '#required' => false,
-    );
 
 
   $form['webspeech_tts_volume'] = array(
@@ -188,10 +170,8 @@ function webspeech_tts_admin_settings_form() {
     '#description' => t('Set the playback volume'),    
     '#type' => 'select',
     '#align' => 'left',
-    '#options' => array( '0.3' => 1, '0.6' => 2, '0.9'   => 3),
+    '#options' => array( '1' => "Default", '0.6' => "Soft", '0.3'   => "Wisper"),
     '#required' => false,
-
-  
     );
 
   $form['webspeech_tts_rate'] = array(  
@@ -199,7 +179,7 @@ function webspeech_tts_admin_settings_form() {
   '#description' => t('Set the playback rate'),  
   '#type' => 'select',
   '#align' => 'left',
-  '#options' => array( '0.3' => 'slow', '0.6' => 'regular', '0.9'  => 'fast'),
+  '#options' => array( '1' => 'Fast', '0.6' => 'Medium', '0.3'  => 'Glacial'),
 
   );
 
@@ -208,9 +188,8 @@ function webspeech_tts_admin_settings_form() {
   '#description' => t('Set the playback pitch'),  
   '#type' => 'select',
   '#align' => 'left',
-  '#options' => array( '0.6' => 'low', '1.3' => 'medium', '1.9'  => 'high'),  
+  '#options' => array( '1' => 'Default', '2.0' => 'High', '0.3'  => 'Low'),  
     );
-
 
   return system_settings_form($form);
 

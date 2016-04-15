@@ -35,9 +35,8 @@ function webspeech_tts_permission() {
 function webspeech_tts_form($form, &$form_state){
 
   //$tts_lang = variable_get('webspeech_tts_accents', 'accents');
-  $tts_accents = variable_get('webspeech_tts_accents', 'accents');
-  $tts_voices = variable_get('webspeech_tts_voice', 'voices');
-  $tts_translated_lang = variable_get('webspeech_tts_translated_lang', 'translated_lang');
+  $tts_lang_accent = variable_get('webspeech_tts_lang_accent', 'accent');
+  $tts_voice = variable_get('webspeech_tts_voice', 'voice');
   $tts_vol = variable_get('webspeech_tts_volume', 'volume');
   $tts_rate = variable_get('webspeech_tts_rate', 'rate');
   $tts_pitch = variable_get('webspeech_tts_pitch', 'pitch');
@@ -45,9 +44,8 @@ function webspeech_tts_form($form, &$form_state){
 
   //drupal_set_message($message);
   
-  drupal_add_js(array('webspeech_tts' => array('tts_accent_js' => $tts_accents)), 'setting');
-  drupal_add_js(array('webspeech_tts' => array('tts_voices_js' => $tts_voices)), 'setting');
-  drupal_add_js(array('webspeech_tts' => array('tts_translated_lang_js' => $tts_translated_lang)), 'setting');
+  drupal_add_js(array('webspeech_tts' => array('tts_lang_accent_js' => $tts_lang_accent)), 'setting');
+  drupal_add_js(array('webspeech_tts' => array('tts_voice_js' => $tts_voice)), 'setting');
   drupal_add_js(array('webspeech_tts' => array('tts_volume_js' => $tts_vol)), 'setting');
   drupal_add_js(array('webspeech_tts' => array('tts_rate_js' => $tts_rate)), 'setting');
   drupal_add_js(array('webspeech_tts' => array('tts_pitch_js' => $tts_pitch)), 'setting');
