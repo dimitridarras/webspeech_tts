@@ -1,5 +1,20 @@
 <?php
 
+/*
+
+ToDo:  
+
+Drupal tabs and doc conventions
+Uninstall  - remove hooks from DB
+Add message for browser detection and unsupported scenarios
+Update .info with resources and references to previous projects
+Figure out how to selectively load JS and module capabilities on a per-node and content-type basis
+Figure out if tabs make sense
+Build controller GUI
+
+*/
+
+
 function webspeech_tts_menu() {
   $items = array();
   $items['node/%/webspeech_tts'] = array(
@@ -36,7 +51,7 @@ function webspeech_tts_form($form, &$form_state){
 
   //$tts_lang = variable_get('webspeech_tts_accents', 'accents');
   $tts_lang_accent = variable_get('webspeech_tts_lang_accent', 'accent');
-  $tts_voice = variable_get('webspeech_tts_voice', 'voice');
+  $tts_voice = variable_get('webspeech_tts_voice', 'tts_voice');
   $tts_vol = variable_get('webspeech_tts_volume', 'volume');
   $tts_rate = variable_get('webspeech_tts_rate', 'rate');
   $tts_pitch = variable_get('webspeech_tts_pitch', 'pitch');
@@ -119,11 +134,48 @@ function webspeech_tts_form_node_form_alter(&$form, $form_state){
 }
 
 
-
-
 function webspeech_tts_node_view($node, $view_mode) {
     //drupal_set_message("You are viewing a node");
 }
+
+function webspeech_tts_get_node_enabled($nid){
+  if (is_numeric($nid)){
+    $result = db_query("SELECT nid FROM {webspeech_tts_enabled} 
+                        WHERE nid = :nid", array('nid' => $nid)) -> fetchField(); if ($result) 
+                        {
+                          return TRUE;
+                        } 
+                      } return FLASE;
+
+  }
+
+function webspeech_tts_set_node_enabled($nid){
+  if (is_numeric($nid) &! webspeech_tts_get_node_enabled ($nid)){
+    db_insert('webspeech_tts_enabled') -> fields(array('nid')=>$nid)) -> execute();
+
+  }
+}
+
+function webspeech_tts_delete_node_enabled($nid){
+  if (is_numeric($nid)){
+    db_delete('webspeech_tts_enabled') -> condition('nid'=>$nid)) -> execute();
+
+  }
+}
+
+
+
+    ){
+
+
+  }
+
+}
+
+
+
+
+
 
 
   
