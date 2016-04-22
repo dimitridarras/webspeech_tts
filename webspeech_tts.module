@@ -11,6 +11,7 @@ Update .info with resources and references to previous projects
 Figure out how to selectively load JS and module capabilities on a per-node and content-type basis
 Figure out if tabs make sense
 Build controller GUI
+Cache needs to be cleared for JS
 
 */
 
@@ -20,10 +21,11 @@ function webspeech_tts_menu() {
   $items['node/%/webspeech_tts'] = array(
     'title' => t('Webspeech TTS for Chrome'),
     'description' => t('Option to Read Node Content Out Loud'),
-    'type' => MENU_LOCAL_TASK,
+    //'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webspeech_tts_form'),
-    'access callback' => TRUE,
+    'access callback' => 'webspeech_tts_access_tab',
+    'access arguments' => array('Create Webspeech subscriptions', 1),'type' => MENU_LOCAL_TASK,
   );
 
   $items['admin/config/content/webspeech_tts'] = array(
@@ -38,18 +40,10 @@ function webspeech_tts_menu() {
   return $items;
 }
 
-function webspeech_tts_permission() {
-  return array(
-    'administer webspeech_tts' => array(
-      'title' => t('Administer webspeech_tts'),
-      'description' => t('Change the settings for how Webspeech TTS behaves on the site.'),
-    ),
-  );
-}
 
 function webspeech_tts_form($form, &$form_state){
 
-  //$tts_lang = variable_get('webspeech_tts_accents', 'accents');
+
   $tts_lang_accent = variable_get('webspeech_tts_lang_accent', 'accent');
   $tts_voice = variable_get('webspeech_tts_voice', 'tts_voice');
   $tts_vol = variable_get('webspeech_tts_volume', 'volume');
@@ -70,7 +64,6 @@ function webspeech_tts_form($form, &$form_state){
   $node_content_to_js = $node->body['und'][0]['value'];
 
   drupal_static_reset('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
-
   drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
   drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
 
@@ -83,99 +76,91 @@ function webspeech_tts_form($form, &$form_state){
       '#type' => 'submit',
       '#value' => t('Read Text Aloud'),
       '#action' => url('#'),
+      '#id' => 'read_text',
       '#attributes' => array('onclick' => 'return (false);'),
   );
+
+/* need to find the right method here...backend form processing/js kludge remains awkward
+
+  $form['stop_button'] = array(
+    '#type' => 'button',
+    '#value' => t('Stop'),
+    '#action' => url('#'),
+    //'#submit' => array('stop_submit_function'),
+    '#id' => 'stop_button',
+    '#attributes' => array('onclick' => 'alert("foo");msg.stop();return (false);'),
+  );
+
+*/
+
 
   return $form;
 }
 
 
-/**
- * Implements hook_form_alter().
- *
- */
 
-/** From Acquia Documentation
-
-function mailfish_form_node_form_alter(&$form, $form_state)
-{  
-$node = $form['#node'];  
-$types = variable_get('mailfish_types', array());
-    if (!empty($types[$node->type]) && user_access('administer
-   mailfish settings')) {    
-$form['mailfish'] = array(      
-'#title' => t('Mailfish'),      
-'#type' => 'fieldset',      
-'#collapsible' => TRUE,      
-'#collapsed' => FALSE,      
-'#group' => 'additional_settings',    );    $form['mailfish']['mailfish_enabled'] = array(      '#title' => t('Collect e-mail addresses for this node.'),      
-'#type' => 'checkbox',
-'#default_value' => isset($node->mailfish_enabled) ?        $node->mailfish_enabled : FALSE,    );  }
-}
-
-
-**/
-
-function webspeech_tts_form_node_form_alter(&$form, $form_state){
+function webspeech_tts_form_node_form_alter(&$form, $form_state) {
   $node = $form['#node'];
-  $form['webspeech_tts_node_form'] = array(
-      '#title' => t('Webspeech TTS'),
-      '#type' => 'fieldset',      
-      '#collapsible' => TRUE,      
+  $types = variable_get('webspeech_tts_types', array());
+  if (!empty($types[$node->type]) && user_access('administer webspeech_tts settings')) {
+    $form['webspeech_tts'] = array(
+      '#title' => t('webspeech_tts'),
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-      '#group' => 'additional_settings', 
-      );
-
-  $form['webspeech_tts']['webspeech_tts'] = array(      
-      '#title' => t('Check to activate Webspeech TTS'), 
+      '#group' => 'additional_settings',
+    );
+    $form['webspeech_tts']['webspeech_tts_enabled'] = array(
+      '#title' => t('Enable WebspeechTTS'),
       '#type' => 'checkbox',
-      '#default_value' => isset($node->webspeech_tts_enabled) ? $node->webspeech_tts_enabled : FALSE,
-      );
+      '#default_value' => isset($node->webspeech_tts_enabled) ? 
+$node->webspeech_tts_enabled : FALSE,
+    );
+  }
 }
-
-
-function webspeech_tts_node_view($node, $view_mode) {
-    //drupal_set_message("You are viewing a node");
-}
-
 function webspeech_tts_get_node_enabled($nid){
-  if (is_numeric($nid)){
-    $result = db_query("SELECT nid FROM {webspeech_tts_enabled} 
-                        WHERE nid = :nid", array('nid' => $nid)) -> fetchField(); if ($result) 
-                        {
-                          return TRUE;
-                        } 
-                      } return FLASE;
-
+  if (is_numeric($nid)) {
+    $result = db_query("SELECT nid FROM {webspeech_tts_enabled}
+      WHERE nid = :nid", array('nid' => $nid))->fetchField();
+    if ($result) {
+      return TRUE;
+    }   
   }
-
+  return FALSE;
+}
 function webspeech_tts_set_node_enabled($nid){
-  if (is_numeric($nid) &! webspeech_tts_get_node_enabled ($nid)){
-    db_insert('webspeech_tts_enabled') -> fields(array('nid')=>$nid)) -> execute();
-
+  if (is_numeric($nid) &! webspeech_tts_get_node_enabled($nid)) {
+      db_insert('webspeech_tts_enabled')
+        ->fields(array('nid' => $nid))
+        ->execute();
   }
 }
-
-function webspeech_tts_delete_node_enabled($nid){
-  if (is_numeric($nid)){
-    db_delete('webspeech_tts_enabled') -> condition('nid'=>$nid)) -> execute();
-
+function webspeech_tts_delete_node_enabled($nid) {
+  if (is_numeric($nid)) {
+    db_delete('webspeech_tts_enabled')
+      ->condition('nid', $nid)
+      ->execute();
   }
 }
-
-
-
-    ){
-
-
+function webspeech_tts_node_load($nodes, $types) {
+  foreach ($nodes as $nid => $node) {
+    $node->webspeech_tts_enabled = webspeech_tts_get_node_enabled($node->nid);
   }
-
 }
-
-
-
-
-
-
-
-  
+function webspeech_tts_node_insert($node) {
+  if ($node->webspeech_tts_enabled) {
+    webspeech_tts_set_node_enabled($node->nid);
+  }
+}
+function webspeech_tts_node_update($node) {
+  webspeech_tts_delete_node_enabled($node->nid);
+  if ($node->webspeech_tts_enabled) {
+    webspeech_tts_set_node_enabled($node->nid);
+  }
+}
+function webspeech_tts_node_delete($node) {
+  webspeech_tts_delete_node_enabled($node->nid);
+}
+function webspeech_tts_access_tab($permission, $nid) {
+    return webspeech_tts_get_node_enabled($nid) && user_access($permission);
+}

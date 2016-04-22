@@ -46,6 +46,13 @@
         window.speechSynthesis.speak(msg);
 
       });
+
+      //stop the trains!    
+      $('.stop_button').click(function () {
+        window.speechSynthesis.stop(msg);
+        console.log("stopped");
+         }); 
+
     }
   }
 
