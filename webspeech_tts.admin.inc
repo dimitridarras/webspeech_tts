@@ -5,7 +5,6 @@ function webspeech_tts_admin_settings_form() {
 
   $form = array();  
   $form['webspeech_tts_types'] = array(
-        //just a placeholder - needs logic
         '#title' => t('The content types to enable Webspeech TTS functionality on'),
         '#description' => t('On the specified node types, a Read Text Aloud button will appear'),    
         '#type' => 'checkboxes',    
@@ -13,20 +12,22 @@ function webspeech_tts_admin_settings_form() {
         '#default_value' => variable_get('webspeech_tts_types',
        array()),  );  
 
+ //lang_accent and $voice are either-or
 
  $lang_accent = array(
 
         'en-US' => t('English'), 
         'it-IT' => t('Italian'), 
         'sv-SE' => t('Swedish'), 
-        'fr-CA' => t('French'), 
+        'fr-FR' => t('French'), 
         'de-DE' => t('German'), 
-        'he-IL' => t('Italian'), 
+        'il-IL' => t('Italian'), 
         'id-ID' => t('Indonesian'), 
         'en-GB' => t('English - British'), 
         'es-AR' => t('Spanish - Argentine'), 
         'nl-BE' => t('Dutch'), 
-        'en' => t('English'), 
+        'en-EN' => t('English - British'), 
+        'es-ES' => t('Spanish - Spain'), 
         'ro-RO' => t('Romanian'), 
         'pt-PT' => t('Portuguese - Portugal'), 
         'th-TH' => t('Thai'), 
@@ -34,14 +35,12 @@ function webspeech_tts_admin_settings_form() {
         'ja-JP' => t('Japanese'), 
         'sk-SK' => t('Slovak'), 
         'hi-IN' => t('Hindi - India'), 
-        'pt-BRt'=>  t('Portuguese - Brazil'), 
+        'pt-BRt'=> t('Portuguese - Brazil'), 
         'ar-SA' => t('Arabic'), 
-        'hu-HU' => t('Hungarian'), 
-        //'zh' => 'zh-TW', What is this?
+        'hu-HU' => t('Hungarian'),         
         'el-GR' => t('Greek'), 
         'ru-RU' => t('Russian'), 
         'en-IE' => t('English - Ireland'), 
-        'es-ES' => t('Spanish - Spain'), 
         'nb-NO' => t('Norwegian Bokmål'), 
         'es-MX' => t('Spanish - Mexico'), 
         'da-DK' => t('Danish'), 
@@ -65,10 +64,11 @@ function webspeech_tts_admin_settings_form() {
       '#options' => $lang_accent,      
     );
 
-    $voice_array = array(
-       /* 'Google US English' => 'Google US English', 
+     $voice_array = array(
+        
+        /* 'Google US English' => 'Google US English', 
         'Google Deutsch' => 'Google Deutsch', 
-        'Google español' => 'Google español', 
+        'Google Español' => 'Google Español', 
         'Google español de Estados Unidos' => 'Google español de Estados Unidos', 
         'Google français' => 'Google français', 
         'Google हिन्दी' => 'Google हिन्दी', 
@@ -87,9 +87,8 @@ function webspeech_tts_admin_settings_form() {
         'Google UK English Female' => t('Google UK English Female'),   
         'Google UK English Female' => t('Google UK English Female'), 
         'Google UK English Male' => t('Google UK English Male'), 
-        'Google UK English Male' => t('Google UK English Male'), */
-        'Alex' => 'Alex', 
-        'Agnes' => 'Agnes', 
+        'Google UK English Male' => t('Google UK English Male'), 
+        */
         'Albert' => 'Albert', 
         'Alice' => 'Alice', 
         'Alva' => 'Alva', 
@@ -153,7 +152,7 @@ function webspeech_tts_admin_settings_form() {
         'Zosia' => 'Zosia', 
         'Zuzana' => 'Zuzana', 
     );
-
+/*
     $form['webspeech_tts_voice'] = array(  
         '#title' => t('Voices'),
         //http://jsbin.com/gosaqihi/9/edit?js,console
@@ -163,35 +162,35 @@ function webspeech_tts_admin_settings_form() {
         '#options' => $voice_array,
         '#required' => false,
     );  
+*/
 
+      $form['webspeech_tts_volume'] = array(
+        '#title' => t('Volume'),
+        '#description' => t('Set the playback volume'),    
+        '#type' => 'select',
+        '#align' => 'left',
+        '#options' => array( '1' => "Default", '0.6' => "Soft", '0.3'   => "Wisper"),
+        '#required' => false,
+        );
 
-  $form['webspeech_tts_volume'] = array(
-    '#title' => t('Volume'),
-    '#description' => t('Set the playback volume'),    
-    '#type' => 'select',
-    '#align' => 'left',
-    '#options' => array( '1' => "Default", '0.6' => "Soft", '0.3'   => "Wisper"),
-    '#required' => false,
-    );
+        $form['webspeech_tts_rate'] = array(  
+        '#title' => t('Rate'),
+        '#description' => t('Set the playback rate'),  
+        '#type' => 'select',
+        '#align' => 'left',
+        '#options' => array( '1' => 'Fast', '0.6' => 'Medium', '0.3'  => 'Glacial'),
 
-  $form['webspeech_tts_rate'] = array(  
-  '#title' => t('Rate'),
-  '#description' => t('Set the playback rate'),  
-  '#type' => 'select',
-  '#align' => 'left',
-  '#options' => array( '1' => 'Fast', '0.6' => 'Medium', '0.3'  => 'Glacial'),
+      );
 
-  );
+      $form['webspeech_tts_pitch'] = array(   
+      '#title' => t('Pitch'),
+      '#description' => t('Set the playback pitch'),  
+      '#type' => 'select',
+      '#align' => 'left',
+      '#options' => array( '1' => 'Default', '2.0' => 'High', '0.3'  => 'Low'),  
+        );
 
-  $form['webspeech_tts_pitch'] = array(   
-  '#title' => t('Pitch'),
-  '#description' => t('Set the playback pitch'),  
-  '#type' => 'select',
-  '#align' => 'left',
-  '#options' => array( '1' => 'Default', '2.0' => 'High', '0.3'  => 'Low'),  
-    );
-
-  return system_settings_form($form);
+        return system_settings_form($form);
 
 
 }

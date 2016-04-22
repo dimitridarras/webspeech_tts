@@ -10,7 +10,8 @@ $schema['webspeech_tts_enabled'] = array(
             'type' => 'int',        
             'not null' => TRUE,        
             'default' => 0,      
-            ),    
+            ),  
+
     ),    
 
     'primary key' => array('nid'),  
@@ -19,5 +20,8 @@ $schema['webspeech_tts_enabled'] = array(
 
 return $schema;
 
+
 }
+
+
 
