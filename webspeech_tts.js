@@ -8,9 +8,12 @@
       var voices = speechSynthesis.getVoices();
       //console.log(voices);
 
-      $('.form-submit').click(function () {
+      $('#read_text').click(function () {
+        //inelegant:  if speechSynthesis is paused, resume.
+        window.speechSynthesis.resume();
+
         //Chrome loads voices asynchronously.
-        //console.log(voices);
+        console.log("start reading");
 
         var js_voices = speechSynthesis.getVoices();
         console.log(js_voices);
@@ -35,8 +38,8 @@
         msg.pitch = the_pitch;
 
         console.log(msg.lang + ": This is the accent/lang");
-        console.log(msg.voice + ": This is the voice");
-        /*console.log(msg.the_accent + ": This is the translated language!");        
+        /*console.log(msg.voice + ": This is the voice");
+        console.log(msg.the_accent + ": This is the translated language!");        
         console.log(msg.the_voice + " This is the voice!");
         console.log(msg.the_translated_lang + " This is the voice!");
         console.log(msg.the_volume + ": This is the Language!");        
@@ -45,14 +48,24 @@
      
         window.speechSynthesis.speak(msg);
 
+
+
+
+
       });
 
-      //stop the trains!    
-      $('.stop_button').click(function () {
-        window.speechSynthesis.stop(msg);
+        //pause the trains!  
+        $('#pause_button').click(function () {
+        window.speechSynthesis.pause();       
         console.log("stopped");
          }); 
 
+        //stop the trains!  
+        $('#cancel_button').click(function () {
+        window.speechSynthesis.cancel();        
+        console.log("cancelled");
+         });  
+     
     }
   }
 

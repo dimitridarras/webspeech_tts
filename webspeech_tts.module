@@ -15,7 +15,7 @@ Cache needs to be cleared for JS
 
 */
 
-
+drupal_static_reset('sites/all/modules/custom/webspeech_tts/webspeech_tts.js?v=1');
 function webspeech_tts_menu() {
   $items = array();
   $items['node/%/webspeech_tts'] = array(
@@ -63,16 +63,16 @@ function webspeech_tts_form($form, &$form_state){
   $node = node_load((int)$path_args[1]);
   $node_content_to_js = $node->body['und'][0]['value'];
 
-  drupal_static_reset('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
+  drupal_static_reset('sites/all/modules/custom/webspeech_tts/webspeech_tts.js?v=1');
   drupal_add_js(array('webspeech_tts' => array('proof_of_concept' => $node_content_to_js)), 'setting');
-  drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js');
+  drupal_add_js('sites/all/modules/custom/webspeech_tts/webspeech_tts.js?v=1');
 
   print '<pre>';
  //var_dump(get_defined_vars());
   print '</pre>';
 
 
-  $form['submit_button'] = array(
+  $form['read_text'] = array(
       '#type' => 'submit',
       '#value' => t('Read Text Aloud'),
       '#action' => url('#'),
@@ -80,18 +80,25 @@ function webspeech_tts_form($form, &$form_state){
       '#attributes' => array('onclick' => 'return (false);'),
   );
 
-/* need to find the right method here...backend form processing/js kludge remains awkward
+/* need to find the right method here...backend form processing/js kludge remains awkward*/
 
-  $form['stop_button'] = array(
+  $form['pause_button'] = array(
     '#type' => 'button',
-    '#value' => t('Stop'),
+    '#value' => t('Pause'),
     '#action' => url('#'),
     //'#submit' => array('stop_submit_function'),
-    '#id' => 'stop_button',
-    '#attributes' => array('onclick' => 'alert("foo");msg.stop();return (false);'),
+    '#id' => 'pause_button',
+    '#attributes' => array('onclick' => 'return (false);'),
   );
 
-*/
+  $form['cancel_button'] = array(
+    '#type' => 'button',
+    '#value' => t('Cancel'),
+    '#action' => url('#'),
+    //'#submit' => array('stop_submit_function'),
+    '#id' => 'cancel_button',
+    '#attributes' => array('onclick' => 'return (false);'),
+  );
 
 
   return $form;
