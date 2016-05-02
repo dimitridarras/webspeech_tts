@@ -1,19 +1,20 @@
 <?php
 
-/*
+/**
+ * @file
+ * Read nodes in a variety of vocies and, seperately, languages
+ *
+ * ToDo:  
+ * Uninstall  - remove vars from DB
+ * Add message for browser detection and unsupported scenarios
+ * Update .info with resources and references to previous projects
+ * Figure out what to do with block
+ *
+ */
 
-ToDo:  
-
-Drupal tabs and doc conventions
-Uninstall  - remove hooks from DB
-Add message for browser detection and unsupported scenarios
-Update .info with resources and references to previous projects
-Figure out how to selectively load JS and module capabilities on a per-node and content-type basis
-Figure out if tabs make sense
-Build controller GUI
-Cache needs to be cleared for JS
-
-*/
+/**
+ * Implements hook_menu().
+ */
 
 drupal_static_reset('sites/all/modules/custom/webspeech_tts/webspeech_tts.js?v=1');
 function webspeech_tts_menu() {
@@ -40,20 +41,21 @@ function webspeech_tts_menu() {
   return $items;
 }
 
+/**
+ * Implements hook_menu().
+ */
 
 function webspeech_tts_form($form, &$form_state){
 
+  $tts_lang_only = variable_get('webspeech_tts_lang_only');
+  $tts_voice = variable_get('webspeech_tts_voice');
 
-  $tts_lang_accent = variable_get('webspeech_tts_lang_accent', 'accent');
-  $tts_voice = variable_get('webspeech_tts_voice', 'tts_voice');
   $tts_vol = variable_get('webspeech_tts_volume', 'volume');
   $tts_rate = variable_get('webspeech_tts_rate', 'rate');
   $tts_pitch = variable_get('webspeech_tts_pitch', 'pitch');
-
-
-  //drupal_set_message($message);
-  
-  drupal_add_js(array('webspeech_tts' => array('tts_lang_accent_js' => $tts_lang_accent)), 'setting');
+    //drupal_set_message('the lang is: '. $tts_lang_only .' and the voice is: '. $tts_voice);
+    //drupal_set_message($message);
+  drupal_add_js(array('webspeech_tts' => array('tts_lang_only_js' => $tts_lang_only)), 'setting');
   drupal_add_js(array('webspeech_tts' => array('tts_voice_js' => $tts_voice)), 'setting');
   drupal_add_js(array('webspeech_tts' => array('tts_volume_js' => $tts_vol)), 'setting');
   drupal_add_js(array('webspeech_tts' => array('tts_rate_js' => $tts_rate)), 'setting');
@@ -80,8 +82,6 @@ function webspeech_tts_form($form, &$form_state){
       '#attributes' => array('onclick' => 'return (false);'),
   );
 
-/* need to find the right method here...backend form processing/js kludge remains awkward*/
-
   $form['pause_button'] = array(
     '#type' => 'button',
     '#value' => t('Pause'),
@@ -100,11 +100,9 @@ function webspeech_tts_form($form, &$form_state){
     '#attributes' => array('onclick' => 'return (false);'),
   );
 
-
   return $form;
+
 }
-
-
 
 function webspeech_tts_form_node_form_alter(&$form, $form_state) {
   $node = $form['#node'];
@@ -170,4 +168,48 @@ function webspeech_tts_node_delete($node) {
 }
 function webspeech_tts_access_tab($permission, $nid) {
     return webspeech_tts_get_node_enabled($nid) && user_access($permission);
+}
+
+/* Conditional to toggle voices and languages which are incompatible */
+
+$the_switch = variable_get('voice_or_lang+only');
+
+//drupal_set_message('This is the switch:'.$the_switch);
+
+if ($the_switch == 'voice'){
+  variable_set('webspeech_tts_lang_only','en-US');
+}
+
+else if ($the_switch == 'lang_only'){ 
+  variable_set('webspeech_tts_voice','0');
+}
+
+function webspeech_tts_block_info(){
+  $blocks = array();
+  $blocks['webspeech_tts'] = array(
+      'info' => t('Webspeech TTS'),
+      );
+  return $blocks;
+}
+
+/* Block option - not sure what to do with this yet
+function webspeech_tts_block_view($delta='')
+{
+  switch($delta) {
+    case 'webspeech_tts':
+      $block['subject'] = null; // Most forms don't have a subject 
+      $block['content'] = drupal_get_form('webspeech_tts_form');
+      break;
+   }
+   return $block;
+ }
+ */
+
+function webspeech_tts_permission() {
+  return array(
+    'administer Webspeech TTS' => array(
+      'title' => t('Administer Webspeech TTS'),
+      'description' => t('Perform administration tasks for Webspeech TTS.'),
+    ),
+  );
 }
