@@ -2,10 +2,11 @@ name = Webspeech TTS (Chrome)
 description = An implementation of Webspeech TTS (Chrome-only support)
 core = 7.x
 package  = Web Speech TTS Drupal
-version = 0.1-dev
+version = 7.x.x-dev
+dependencies[] = block
 ;dependencies[] = Libraries
-;dependencies[] = block
 configure = admin/config/content/webspeech_tts
 scripts[] = webspeech_tts.js
+;research - embed a form in a block: http://stackoverflow.com/questions/1450941/inserting-a-form-into-a-block-in-drupal
 
 
