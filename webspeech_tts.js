@@ -5,8 +5,6 @@
 
   Drupal.behaviors.webspeech_tts = {
     attach: function () {
-      var voices = speechSynthesis.getVoices();
-      //console.log(voices);
 
       $('#read_text').click(function () {
         //inelegant:  if speechSynthesis is paused, resume.
@@ -22,35 +20,33 @@
         var render_voice = Drupal.settings.webspeech_tts.proof_of_concept;
     
         var msg = new SpeechSynthesisUtterance(render_voice);
-        var the_lang_accent = Drupal.settings.webspeech_tts.tts_lang_accent_js;
+        var the_lang_only = Drupal.settings.webspeech_tts.tts_lang_only_js;
         var the_voice = Drupal.settings.webspeech_tts.tts_voice_js;
-
+        //console.log(the_voice);
    
         var the_volume = Drupal.settings.webspeech_tts.tts_volume_js;
         var the_rate = Drupal.settings.webspeech_tts.tts_rate_js;
         var the_pitch = Drupal.settings.webspeech_tts.tts_pitch_js;                                        
 
 
-        msg.lang = the_lang_accent;
-        msg.voice = js_voices.filter(function(js_voices) {return js_voices.name == the_voice;})[0];
+        msg.lang = the_lang_only;  //'el-GR' contant value for testing lang/accent
+        msg.voice  = js_voices.filter(function(js_voices) {return js_voices.name == the_voice;})[0];
+        //msg.voice = 0; // set to zero for testing language which otherwise "conflicts"
+        //console.log(msg.voice);
+        
         msg.volume = the_volume;
         msg.rate = the_rate;
         msg.pitch = the_pitch;
 
         console.log(msg.lang + ": This is the accent/lang");
-        /*console.log(msg.voice + ": This is the voice");
-        console.log(msg.the_accent + ": This is the translated language!");        
-        console.log(msg.the_voice + " This is the voice!");
-        console.log(msg.the_translated_lang + " This is the voice!");
-        console.log(msg.the_volume + ": This is the Language!");        
-        console.log(msg.the_rate + " This is the voice!");
-        console.log(msg.the_pitch + ": This is the Language!");*/
+        console.log(msg.voice + ": This is the voice");
+        /*        
+        console.log(msg.the_volume + ": This is the volume!");        
+        console.log(msg.the_rate + " This is the rate!");
+        console.log(msg.the_pitch + ": This is the pitch!");
+        */
      
         window.speechSynthesis.speak(msg);
-
-
-
-
 
       });
 
