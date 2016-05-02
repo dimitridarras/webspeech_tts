@@ -2,7 +2,6 @@
 
 function webspeech_tts_admin_settings_form() {
 
-
   $form = array();  
   $form['webspeech_tts_types'] = array(
         '#title' => t('The content types to enable Webspeech TTS functionality on'),
@@ -12,173 +11,97 @@ function webspeech_tts_admin_settings_form() {
         '#default_value' => variable_get('webspeech_tts_types',
        array()),  );  
 
- //lang_accent and $voice are either-or
  // https://www.deckfifty.com/blog/2012-11/drupal-form-api-conditional-fields
 
-    $form['voice_or_lang+accent'] = array(
+    $form['voice_or_lang+only'] = array(
     '#title' => t('Select either a voice or language/accent'),
     '#type' => 'radios',
-    '#options' => array('voice' => t('Voice'), 'lang_accent' => t('Language and Accent')),
-    '#default_value' => variable_get('voice_or_lang+accent'), 
+    '#options' => array('voice' => t('Voice'), 'lang_only' => t('Language')),
+    '#default_value' => variable_get('voice_or_lang+only'), 
+
   );
 
- $lang_accent = array(
-
-        'en-US' => t('English'), 
+ $lang_only = array(
+        'en-US' => t('English - US'),
+        'en-GB' => t('English'),
         'it-IT' => t('Italian'), 
-        'sv-SE' => t('Swedish'), 
-        'fr-FR' => t('French'), 
+        'fr-FR' => t('French'),  
         'de-DE' => t('German'), 
-        'il-IL' => t('Italian'), 
-        'id-ID' => t('Indonesian'), 
-        'en-GB' => t('English - British'), 
-        'es-AR' => t('Spanish - Argentine'), 
-        'nl-BE' => t('Dutch'), 
-        'en-EN' => t('English - British'), 
-        'es-ES' => t('Spanish - Spain'), 
-        'ro-RO' => t('Romanian'), 
+        'es-ES' => t('Spanish'), 
         'pt-PT' => t('Portuguese - Portugal'), 
-        'th-TH' => t('Thai'), 
-        'en-AU' => t('English - Australian'), 
         'ja-JP' => t('Japanese'), 
-        'sk-SK' => t('Slovak'), 
-        'hi-IN' => t('Hindi - India'), 
-        'pt-BRt'=> t('Portuguese - Brazil'), 
-        'ar-SA' => t('Arabic'), 
-        'hu-HU' => t('Hungarian'),         
-        'el-GR' => t('Greek'), 
-        'ru-RU' => t('Russian'), 
-        'en-IE' => t('English - Ireland'), 
-        'nb-NO' => t('Norwegian Bokmål'), 
-        'es-MX' => t('Spanish - Mexico'), 
-        'da-DK' => t('Danish'), 
-        'fi-FI' => t('Finish'), 
-        'zh-HK' => t('Cantonese - Hong Kong'), 
-        'en-ZA' => t('English - South Africa'), 
-        'fr-FR' => t('French'),
-        'zh-CN' => t('Canotonese - China'),
-        'nl-NL' => t('Netherlands'),
-        'tr-TR' => t('Turkish'), 
-        'ko-KRk'=> t('Korean'), 
-        'pl-PL' => t('Polish'), 
-        'cs-CZ' => t('Czech'), 
-        'es-US' => t('English - United States'),
       );
 
-  $form['webspeech_tts_lang_accent'] = array(
+  $form['webspeech_tts_lang_only'] = array(
+      '#default_value' => variable_get('webspeech_tts_lang_only'),   
+      // '#value_callback' => variable_set('webspeech_tts_voice','0'),     
       '#type' => 'select',
-      '#title' => t('Languages & Accents'),
-      '#description' => t('Choose a language or accent'), 
-      '#options' => $lang_accent,  
-      '#default_value' => variable_get('webspeech_tts_lang_accent'), 
+      //'#name' => 'the_lang',
+      '#align' => 'left',
+      '#title' => t('Language'),
+      '#description' => t('Choose a language'), 
+      '#options' => $lang_only,  
       '#states' => array(
-          'visible' => array(
-            ':input[name="voice_or_lang+accent"]' => array('value' => 'lang_accent'),
-          ),   
-        ),
+        'visible' => array(':input[name="voice_or_lang+only"]' => 
+                        array('value' => 'lang_only'),
+                            ),
+      ),
+      
+
     );
-     $voice_array = array(
-        
-        'Google US English' => 'Google US English', 
-        'Google Deutsch' => 'Google Deutsch', 
-        'Google Español' => 'Google Español', 
-        'Google español de Estados Unidos' => 'Google español de Estados Unidos', 
-        'Google français' => 'Google français', 
-        'Google हिन्दी' => 'Google हिन्दी', 
-        'Google Bahasa Indonesia' => 'Google Bahasa Indonesia', 
-        'Google italiano' => 'Google italiano', 
-        'Google 日本語' => 'Google 日本語', 
-        'Google 한국의' => 'Google 한국의', 
-        'Google Nederlands'  => 'Google Nederlands', 
-        'Google polski' => 'Google polski', 
-        'Google português do Brasil'  => 'Google português do Brasil', 
-        'Google русский'  => 'Google русский', 
-        'Google 普通话（中国大陆）'  => 'Google 普通话（中国大陆）', 
-        'Google 粤語（香港）'  => 'Google 粤語（香港）', 
-        'Google 國語（臺灣）'  => 'Google 國語（臺灣）',
-        'Google US English' => t('Google US English'), 
+
+     $voice_array = array(      
+        'Google-US-English' => 'Google US English', 
         'Google UK English Female' => t('Google UK English Female'),   
         'Google UK English Female' => t('Google UK English Female'), 
         'Google UK English Male' => t('Google UK English Male'), 
-        'Google UK English Male' => t('Google UK English Male'), 
-        
+        'Google UK English Male' => t('Google UK English Male'),       
         'Albert' => 'Albert', 
-        //'Alice' => 'Alice', 
-        //'Alva' => 'Alva', 
-        //'Amelie' => 'Amelie', 
-        //'Anna' => 'Anna', 
         'Bad News' => 'Bad News', 
         'Bahh' => 'Bahh', 
         'Bells' => 'Bells', 
         'Boing' => 'Boing', 
         'Bruce' => 'Bruce', 
-        'Bubbles' => 'Bubbles', 
-        //'Carmit' => 'Carmit', 
+        'Bubbles' => 'Bubbles',  
         'Cellos' => 'Cellos', 
-        //'Damayanti' => 'Damayanti', 
         'Daniel' => 'Daniel', 
         'Deranged' => 'Deranged', 
-        //'Diego' => 'Diego', 
-        //'Ellen' => 'Ellen', 
         'Fiona' => 'Fiona', 
         'Fred' => 'Fred', 
         'Good News' => 'Good News', 
         'Hysterical' => 'Hysterical', 
-        //'Ioana' => 'Ioana', 
-        //'Joana' => 'Joana', 
-        //'Junior' => 'Junior', 
-        //'Kanya' => 'Kanya', 
         'Karen' => 'Karen', 
         'Kathy' => 'Kathy', 
-        //'Kyoko' => 'Kyoko', 
-        //'Laura' => 'Laura', 
-        //'Lekha' => 'Lekha', 
-        //'Luciana' => 'Luciana', 
-        //'Maged' => 'Maged', 
-        //'Mariska' => 'Mariska', 
-        //'Mei-Jia' => 'Mei-Jia', 
-        //'Melina' => 'Melina', 
-        //'Milena' => 'Milena', 
         'Moira' => 'Moira', 
-        //'Monica' => 'Monica', 
-        //'Nora' => 'Nora', 
-        //'Paulina' => 'Paulina', 
         'Pipe Organ' => 'Pipe Organ', 
         'Princess' => 'Princess', 
         'Ralph' => 'Ralph', 
         'Samantha' => 'Samantha', 
-        //'Sara' => 'Sara', 
-        //'Satu' => 'Satu', 
-        //'Sin-ji' => 'Sin-ji', 
         'Tessa' => 'Tessa', 
-        //'Thomas' => 'Thomas', 
-        //'Ting-Ting' => 'Ting-Ting', 
         'Trinoids' => 'Trinoids', 
         'Veena' => 'Veena', 
         'Vicki' => 'Vicki', 
         'Victoria' => 'Victoria', 
         'Whisper' => 'Whisper', 
-        //'Xander' => 'Xander', 
-        //'Yelda' => 'Yelda', 
-        //'Yuna' => 'Yuna', 
         'Zarvox' => 'Zarvox', 
-        //'Zosia' => 'Zosia', 
-       // 'Zuzana' => 'Zuzana', 
     );
 
     $form['webspeech_tts_voice'] = array(  
-        '#title' => t('Voice'),
+        '#title' => t('Voice and Accent'),
         //http://jsbin.com/gosaqihi/9/edit?js,console
-        '#description' => t('Choose a voice'),    
+        '#description' => t('Choose a voice or acccent'),    
+        //'#value_callback' =>variable_set('webspeech_tts_lang_only','en-US'),              
+        '#default_value' => variable_get('webspeech_tts_voice'),  
+
         '#type' => 'select',
-        '#align' => 'left',
+        '#align' => 'right',
         '#options' => $voice_array,
         '#states' => array(
-          'visible' => array(
-            ':input[name="voice_or_lang+accent"]' => array('value' => 'voice'),
-          ),   
-        ),
-        '#default_value' => variable_get('webspeech_tts_voice'),        
+         'visible' => array(':input[name="voice_or_lang+only"]' => array('value' => 'voice'),            
+         ),
+
+   ),
+    
     );  
 
 
@@ -212,6 +135,5 @@ function webspeech_tts_admin_settings_form() {
         );
 
         return system_settings_form($form);
-
 
 }
