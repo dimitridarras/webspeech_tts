@@ -11,7 +11,7 @@ $schema['webspeech_tts_enabled'] = array(
             'not null' => TRUE,        
             'default' => 0,      
             ),  
-
+        
     ),    
 
     'primary key' => array('nid'),  
