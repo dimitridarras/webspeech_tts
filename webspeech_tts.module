@@ -25,7 +25,8 @@ function webspeech_tts_menu() {
     //'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webspeech_tts_form'),
-    'access callback' => 'webspeech_tts_access_tab',
+    // disabled for now
+    //'access callback' => 'webspeech_tts_access_tab',
     'access arguments' => array('Create Webspeech subscriptions', 1),'type' => MENU_LOCAL_TASK,
   );
 
@@ -192,18 +193,38 @@ function webspeech_tts_block_info(){
   return $blocks;
 }
 
-/* Block option - not sure what to do with this yet
+/* Block option - not sure what to do with this yet*/
 function webspeech_tts_block_view($delta='')
 {
   switch($delta) {
     case 'webspeech_tts':
-      $block['subject'] = null; // Most forms don't have a subject 
-      $block['content'] = drupal_get_form('webspeech_tts_form');
+
+     if (arg(0) == 'node' && is_numeric(arg(1)) && webspeech_tts_get_node_enabled(arg(1))){
+      $nid = arg(1);
+
+      $form =  drupal_get_form('webspeech_tts_form');
+
+      $block = array('content' => theme('webspeech_tts_block', array('form' => drupal_render($form))),
+      );
+
+      return $block;
+    }
+
       break;
    }
-   return $block;
+   
  }
- */
+ 
+ function webspeech_tts_theme() {
+  $theme = array();
+  $theme['webspeech_tts_block'] = array(
+    'variables' => array(
+      'form' => '',
+    ),
+    'template' => 'webspeech_tts-block',
+  );
+  return $theme;
+}
 
 function webspeech_tts_permission() {
   return array(
