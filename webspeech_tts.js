@@ -7,7 +7,6 @@
     attach: function () {
 
       $('#read_text').click(function () {
-        //inelegant:  if speechSynthesis is paused, resume.
         window.speechSynthesis.resume();
 
         //Chrome loads voices asynchronously.
@@ -15,10 +14,8 @@
 
         var js_voices = speechSynthesis.getVoices();
         console.log(js_voices);
-        //This is a special case above for voices - see msg.voice below
-
         var render_voice = Drupal.settings.webspeech_tts.proof_of_concept;
-    
+
         var msg = new SpeechSynthesisUtterance(render_voice);
         var the_lang_only = Drupal.settings.webspeech_tts.tts_lang_only_js;
         var the_voice = Drupal.settings.webspeech_tts.tts_voice_js;

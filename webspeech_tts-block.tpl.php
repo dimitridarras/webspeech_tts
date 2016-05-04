@@ -1,18 +1,21 @@
 <?php
+
 /**
  * @file
- *   Themes the Webspeech TTS block.  
+ *   Themes the Webspeech TTS block - adds a JS Sniffer	for WebSpeech Support
  */
+
 ?>
-<div id='webspeech_tts-rocks' style="background-color:#ccc;padding:10px;">
+
+<div id='webspeech_tts-rocks'>
 
 <script>
 if (window.SpeechSynthesisUtterance === undefined) {
-
-document.write("<strong>Your Browser Does Not Support the WebSpeechAPI</strong>.  Currenly, only Chrome supports it and Safari, with limited support.<br/></br>");
-
+	document.write("<div class='messages error'>Your Browser Does Not Support the WebSpeechAPI.  Currenly, only Chrome supports it and Safari, with limited support.<br/></br></div>");
 }
 </script>
+
+
 
   <?php print t('Use the controls below for web speech: <br/> <br/>'); ?>
   <?php print $form; ?>

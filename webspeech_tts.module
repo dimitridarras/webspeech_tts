@@ -2,21 +2,35 @@
 
 /**
  * @file
- * Read nodes in a variety of vocies and, seperately, languages
+ * Read nodes in a variety of vocies and, seperately, languages/accents
  *
- * ToDo:  
- * Uninstall  - remove vars from DB
- * Add message for browser detection and unsupported scenarios
- * Update .info with resources and references to previous projects
- * Figure out what to do with block
  *
  */
+
+/**
+ * Implements hook_help().
+ */
+
+function webspeech_tts_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#webspeech_tts':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Webspeech TTS module allows users with the <em>Administer site configuration</em> permission to quickly and easily change voices and languages(accents) associated with content in a node.  Like the API itself, it is experimental and not intended for enterprise usage.  Clear both the Drupal AND browser cache frequently when testing. </p>');
+      $output .= '<h3>' . t('How to use') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Enabling on a node') . '</dt>';
+      $output .= '<dd>' . t("You may enable WebspeechTTS on a node in edit mode in the 'WebspeechTTS' tab. In order to place the Play-Pause-Cancel buttons adjancent to the node, locate the 'WebspeechTTS' block. ") . '</dd>';
+      $output .= '</dl>';
+      return $output;
+  }
+}
 
 /**
  * Implements hook_menu().
  */
 
 drupal_static_reset('sites/all/modules/custom/webspeech_tts/webspeech_tts.js?v=1');
+
 function webspeech_tts_menu() {
   $items = array();
   $items['node/%/webspeech_tts'] = array(
@@ -27,15 +41,15 @@ function webspeech_tts_menu() {
     'page arguments' => array('webspeech_tts_form'),
     // disabled for now
     //'access callback' => 'webspeech_tts_access_tab',
-    'access arguments' => array('Create Webspeech subscriptions', 1),'type' => MENU_LOCAL_TASK,
+    //'access arguments' => array('Create Webspeech subscriptions', 1),'type' => MENU_LOCAL_TASK,
   );
 
   $items['admin/config/content/webspeech_tts'] = array(
     'title' => t('Webspeech TTS for Chrome'),
-    'description' => t('Administer Webspeech TTS for Chrome'),
+    'description' => t('Administer Webspeech TTS'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webspeech_tts_admin_settings_form'),
-    'access arguments' => array('administer webspeech_tts'),
+    'access arguments' => array('administer webspeech_tts settings'),
     'file' => 'webspeech_tts.admin.inc',
     'type' => MENU_NORMAL_ITEM,
     );
@@ -43,7 +57,7 @@ function webspeech_tts_menu() {
 }
 
 /**
- * Implements hook_menu().
+ * Implements hook_form().
  */
 
 function webspeech_tts_form($form, &$form_state){
@@ -73,7 +87,6 @@ function webspeech_tts_form($form, &$form_state){
   print '<pre>';
  //var_dump(get_defined_vars());
   print '</pre>';
-
 
   $form['read_text'] = array(
       '#type' => 'submit',
@@ -105,6 +118,10 @@ function webspeech_tts_form($form, &$form_state){
 
 }
 
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+
 function webspeech_tts_form_node_form_alter(&$form, $form_state) {
   $node = $form['#node'];
   $types = variable_get('webspeech_tts_types', array());
@@ -124,6 +141,11 @@ $node->webspeech_tts_enabled : FALSE,
     );
   }
 }
+
+/**
+ * Implements hook_VERB_node_enabled().
+ */
+
 function webspeech_tts_get_node_enabled($nid){
   if (is_numeric($nid)) {
     $result = db_query("SELECT nid FROM {webspeech_tts_enabled}
@@ -193,7 +215,11 @@ function webspeech_tts_block_info(){
   return $blocks;
 }
 
-/* Block option - not sure what to do with this yet*/
+
+/**
+ * Implements hook_block_view().
+ */
+
 function webspeech_tts_block_view($delta='')
 {
   switch($delta) {
@@ -215,6 +241,10 @@ function webspeech_tts_block_view($delta='')
    
  }
  
+/**
+ * Implements hook_theme().
+ */
+
  function webspeech_tts_theme() {
   $theme = array();
   $theme['webspeech_tts_block'] = array(
@@ -226,6 +256,10 @@ function webspeech_tts_block_view($delta='')
   return $theme;
 }
 
+/**
+ * Implements hook_permission().
+ */
+
 function webspeech_tts_permission() {
   return array(
     'administer Webspeech TTS' => array(
@@ -234,3 +268,17 @@ function webspeech_tts_permission() {
     ),
   );
 }
+
+/**
+ * Implements hook_uninstall().
+
+
+function webspeech_tts_uninstall() {
+ variable_del('webspeech_tts_lang_only');
+ variable_del('webspeech_tts_voice');
+ variable_del('webspeech_tts_volume');
+ variable_del('webspeech_tts_rate');
+ variable_del('webspeech_tts_pitch');
+ variable_del('voice_or_lang+only');
+}
+ */

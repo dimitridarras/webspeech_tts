@@ -104,7 +104,6 @@ function webspeech_tts_admin_settings_form() {
     
     );  
 
-
       $form['webspeech_tts_volume'] = array(
         '#title' => t('Volume'),
         '#description' => t('Set the playback volume'),    
@@ -123,16 +122,16 @@ function webspeech_tts_admin_settings_form() {
         '#options' => array( '1' => 'Fast', '0.6' => 'Medium', '0.3'  => 'Glacial'),
         '#default_value' => variable_get('webspeech_tts_rate'),         
 
-      );
-
-      $form['webspeech_tts_pitch'] = array(   
-      '#title' => t('Pitch'),
-      '#description' => t('Set the playback pitch'),  
-      '#type' => 'select',
-      '#align' => 'left',
-      '#options' => array( '1' => 'Default', '2.0' => 'High', '0.3'  => 'Low'), 
-      '#default_value' => variable_get('webspeech_tts_pitch'),       
         );
+
+        $form['webspeech_tts_pitch'] = array(   
+        '#title' => t('Pitch'),
+        '#description' => t('Set the playback pitch'),  
+        '#type' => 'select',
+        '#align' => 'left',
+        '#options' => array( '1' => 'Default', '2.0' => 'High', '0.3'  => 'Low'), 
+        '#default_value' => variable_get('webspeech_tts_pitch'),       
+          );
 
         return system_settings_form($form);
 
