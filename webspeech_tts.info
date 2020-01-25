@@ -1,11 +1,1 @@
-name = Webspeech TTS (Chrome)
-description = An implementation of Webspeech TTS (Chrome-only support)
-core = 7.x
-package  = Web Speech TTS Drupal
-version = 0.2-dev
-dependencies[] = block
-configure = admin/config/content/webspeech_tts
-scripts[] = webspeech_tts.js
-
-
-
+name = Webspeech TTS
