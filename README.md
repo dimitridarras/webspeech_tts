@@ -40,8 +40,6 @@ https://www.drupal.org/sandbox/pau1m/1215214
 
 ![Enable Module](/images/webspeech-tts-enable.png)
 
-Dev Drupal Module for WebSpeech API supported by Chrome:  Drupal Webspeech Speech-to-Text
-
 Please note that this project is also available at Drupal.org:
 
 https://www.drupal.org/sandbox/ddarras2012/2702987
