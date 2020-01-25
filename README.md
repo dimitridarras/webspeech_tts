@@ -1,6 +1,6 @@
-<H1>webspeech_tts (Text to Speech) Module for Drupal</H1>
+<H1>Webspeech TTS (Text to Speech) Module for Drupal 7</H1>
 
-The Webspeech TTS (Text to Speech) module allows users with the Administer
+This experimental module allows users with the Administer
 site configuration permission to quickly and easily change voices and
 languages(accents) associated with content in a node and read the contents
 of a node with pre-determined voices/accents and (experimental)languages.  
