@@ -1,27 +1,43 @@
 <?php
 
-function webspeech_tts_schema() {  
+/**
+ * @file
+ * Tracks whether Webspeech TTS is enabled for a given node.
+ */
 
-$schema['webspeech_tts_enabled'] = array(
-    'description' => 'Tracks whether Webspeech TTS is enabled for a given node.',    
-    'fields' => array(      
-        'nid' => array(
-            'description' => 'The {node}.nid that has Webspeech TSS enabled.',        
-            'type' => 'int',        
-            'not null' => TRUE,        
-            'default' => 0,      
-            ),  
-        
-    ),    
+/**
+ * Implements hook_schema().
+ */
+function webspeech_tts_schema() {
+  $schema['webspeech_tts_enabled'] = array(
+    'description' => 'Tracks whether Webspeech TTS is enabled for a given node.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The {node}.nid that has Webspeech TSS enabled.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('nid'),
 
-    'primary key' => array('nid'),  
-
-);
-
-return $schema;
-
-
+  );
+  return $schema;
 }
 
-
-
+/**
+ * Implements hook_uninstall().
+ */
+function webspeech_tts_uninstall() {
+  $array_variable = array(
+    'lang_only',
+    'voice',
+    'volume',
+    'rate',
+    'lang_pitch',
+    'voice_or_lang_only',
+  );
+  foreach ($array_variable as $value) {
+    variable_del('webspeech_tts_' . $value);
+  }
+}
