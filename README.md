@@ -34,7 +34,11 @@ https://www.drupal.org/project/freetts
 Drupal Module eSpeak TTS
 https://www.drupal.org/sandbox/pau1m/1215214
 
+<h2>Screengrabs and Configuration</h2>
 
+![Module Configuration](/images/webspeech-tts-configuration.png)
+
+![Enable Module](/images/webspeech-tts-enable.png)
 
 Dev Drupal Module for WebSpeech API supported by Chrome:  Drupal Webspeech Speech-to-Text
 
