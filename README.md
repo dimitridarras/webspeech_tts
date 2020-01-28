@@ -44,7 +44,7 @@ Checking the Webspeech option under the publish tabbed menu for a given content 
 
 ![Enable Module](/images/webspeech-tts-enable.png)
 
-![Enable Module](/images/webspeech-tts-block-configuration.png)
+![Enable Module](/images/webspeech-tts-block-configuration.jpeg)
 
 Please note that this project is also available at Drupal.org:
 
